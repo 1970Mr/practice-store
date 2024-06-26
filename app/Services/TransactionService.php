@@ -33,7 +33,7 @@ class TransactionService
      * @throws InvoiceNotFoundException
      * @throws InvalidPaymentException
      */
-    public function callback(string $transactionId, ?callable $callbackFunc = null): int
+    public function callback(string $transactionId, ?callable $callbackFunc = null): void
     {
         try {
             $transaction = $this->getTransactionById($transactionId);
@@ -44,8 +44,6 @@ class TransactionService
             if ($callbackFunc) {
                 $callbackFunc($transaction);
             }
-
-            return $transactionId;
         } catch (InvalidPaymentException|InvoiceNotFoundException $e) {
             logger($e->getMessage());
             $this->updateTransactionFailure($transactionId);
@@ -78,6 +76,7 @@ class TransactionService
 
     private function getTransactionById(string $transactionId): Transaction
     {
+        /** @var Transaction $transaction */
         $transaction = Transaction::query()
             ->where('transaction_id', $transactionId)
             ->where('user_id', Auth::id())

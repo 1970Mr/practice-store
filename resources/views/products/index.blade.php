@@ -11,10 +11,15 @@
                         <p class="card-text">{{ $product->description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <form action="/cart/add" method="POST">
+                                <form action="/cart/add" method="POST" class="ms-3">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">افزودن به سبد</button>
+                                </form>
+                                <form action="/products/purchase" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">خرید مستقیم</button>
                                 </form>
                             </div>
                             <small class="text-muted">{{ $product->price }} تومان</small>

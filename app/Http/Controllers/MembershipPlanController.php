@@ -24,12 +24,12 @@ class MembershipPlanController extends Controller
         return view('membership_plans.index', compact('plans'));
     }
 
-    public function store(Request $request): mixed
+    public function purchase(Request $request): mixed
     {
         try {
             $membershipPlan = MembershipPlan::query()->findOrFail($request->plan_id);
             $invoice = (new Invoice())->amount($membershipPlan->price);
-            $callbackUrl = route('membership-plan.callback');
+            $callbackUrl = route('membership-plans.callback');
 
             return $this->transactionService->purchase($invoice, $membershipPlan, $callbackUrl);
         } catch (Exception $e) {
@@ -41,7 +41,7 @@ class MembershipPlanController extends Controller
     {
         try {
             $transaction_id = $request->get('Authority');
-            $transaction_id = $this->transactionService->callback($transaction_id, static function ($transaction) {
+            $this->transactionService->callback($transaction_id, static function ($transaction) {
                 Auth::user()->update([
                     'membership_plan_id' => $transaction->product_id,
                     'membership_expires_at' => now()->addDays($transaction->product->duration),
