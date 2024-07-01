@@ -17,7 +17,8 @@ class Product extends Model implements ProductInterface
         'name',
         'description',
         'price',
-        'image'
+        'image',
+        'stock',
     ];
 
     public function cartItems(): HasMany
@@ -38,5 +39,10 @@ class Product extends Model implements ProductInterface
     public function orders(): MorphToMany
     {
         return $this->morphToMany(Order::class, 'salable');
+    }
+
+    public function hasStock(int $quantity): bool
+    {
+        return $this->stock >= $quantity;
     }
 }
