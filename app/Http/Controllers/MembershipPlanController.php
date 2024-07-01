@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MembershipPlan;
-use App\Services\TransactionService;
+use App\Services\Transaction;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,7 @@ use Shetabit\Multipay\Invoice;
 
 class MembershipPlanController extends Controller
 {
-    public function __construct(private readonly TransactionService $transactionService)
+    public function __construct(private readonly Transaction $transactionService)
     {
     }
 

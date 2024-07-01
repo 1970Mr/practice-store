@@ -15,14 +15,12 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
 //            $table->char('payment_id', 32)->index();
-            $table->string('payment_id');
-            $table->string('transaction_id')->nullable();
-            $table->decimal('amount', 10, 2);
-            $table->morphs('product');
-            $table->text('invoice_details')->nullable();
-            $table->text('transaction_result')->nullable();
+            $table->string('payment_id')->comment('Our system creates');
+            $table->string('transaction_id')->nullable()->comment('The payment gateway creates');
+            $table->bigInteger('amount');
             $table->bigInteger('reference_id')->nullable();
             $table->enum('status', Status::items());
+            $table->morphs('product');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

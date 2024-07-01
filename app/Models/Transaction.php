@@ -13,11 +13,10 @@ class Transaction extends Model
         'payment_id',
         'transaction_id',
         'amount',
+        'gateway',
+        'reference_id',
         'product_type',
         'product_id',
-        'invoice_details',
-        'transaction_result',
-        'reference_id',
         'status',
         'user_id',
     ];
@@ -37,21 +36,5 @@ class Transaction extends Model
         return [
             'status' => Status::class,
         ];
-    }
-
-    protected function invoiceDetails(): Attribute
-    {
-        return Attribute::make(
-            get: static fn(mixed $value) => unserialize($value, ['allowed_classes' => true]),
-            set: static fn(mixed $value) => serialize($value),
-        );
-    }
-
-    protected function transactionResult(): Attribute
-    {
-        return Attribute::make(
-            get: static fn(mixed $value) => unserialize($value, ['allowed_classes' => true]),
-            set: static fn(mixed $value) => serialize($value),
-        );
     }
 }

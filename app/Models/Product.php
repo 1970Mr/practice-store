@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Services\Transaction\Contracts\ProductInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class Product extends Model
+class Product extends Model implements ProductInterface
 {
     use HasFactory;
 
@@ -17,7 +19,7 @@ class Product extends Model
         'image'
     ];
 
-    public function cartItems()
+    public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }

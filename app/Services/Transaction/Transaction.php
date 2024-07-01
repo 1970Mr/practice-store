@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Transaction;
 
 use App\Enums\Status;
+use App\Exceptions\VerifyRepeatedException;
 use App\Models\Purchase;
-use App\Models\Transaction;
+use App\Models\Transaction as TransactionModel;
+use App\Services\Transaction\Contracts\ProductInterface;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Shetabit\Multipay\Contracts\ReceiptInterface;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Exceptions\InvoiceNotFoundException;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
 
-class TransactionService
+class Transaction
 {
     /**
      * @throws Exception
      */
-    public function purchase(Invoice $invoice, Model $model, string $callbackUrl): mixed
+    public function checkout(Invoice $invoice, ProductInterface $product, string $callbackUrl): mixed
     {
         try {
-            $transaction = $this->createTransaction($invoice, $model);
+            $transaction = $this->createTransaction($invoice, $product);
             return $this->processPayment($invoice, $callbackUrl, $transaction);
         } catch (Exception $e) {
             logger($e->getMessage());
@@ -32,8 +34,9 @@ class TransactionService
     /**
      * @throws InvoiceNotFoundException
      * @throws InvalidPaymentException
+     * @throws VerifyRepeatedException
      */
-    public function callback(string $transactionId, ?callable $callbackFunc = null): void
+    public function verify(string $transactionId, ?callable $callbackFunc = null): int
     {
         try {
             $transaction = $this->getTransactionById($transactionId);
@@ -44,27 +47,32 @@ class TransactionService
             if ($callbackFunc) {
                 $callbackFunc($transaction);
             }
-        } catch (InvalidPaymentException|InvoiceNotFoundException $e) {
+
+            return $receipt->getReferenceId();
+        } catch (InvalidPaymentException|InvoiceNotFoundException|Exception $e) {
+            if ($e->getCode() === 101) {
+                throw new VerifyRepeatedException();
+            }
             logger($e->getMessage());
             $this->updateTransactionFailure($transactionId);
             throw $e;
         }
     }
 
-    private function createTransaction(Invoice $invoice, Model $model): Transaction
+    private function createTransaction(Invoice $invoice, ProductInterface $product): TransactionModel
     {
-        return Transaction::query()->create([
+        return TransactionModel::query()->create([
             'payment_id' => uniqid('', true),
             'amount' => $invoice->getAmount(),
-            'product_type' => get_class($model),
-            'product_id' => $model->id,
+            'product_type' => get_class($product),
+            'product_id' => $product->id,
             'invoice_details' => $invoice,
             'status' => Status::Pending,
             'user_id' => Auth::id(),
         ]);
     }
 
-    private function processPayment(Invoice $invoice, string $callbackUrl, Transaction $transaction): mixed
+    private function processPayment(Invoice $invoice, string $callbackUrl, TransactionModel $transaction): mixed
     {
         Payment::callbackUrl($callbackUrl);
         $payment = Payment::purchase($invoice, static function ($driver, $transactionId) use ($transaction) {
@@ -74,10 +82,10 @@ class TransactionService
         return $payment->pay()->render();
     }
 
-    private function getTransactionById(string $transactionId): Transaction
+    public function getTransactionById(string $transactionId): TransactionModel
     {
-        /** @var Transaction $transaction */
-        $transaction = Transaction::query()
+        /** @var TransactionModel $transaction */
+        $transaction = TransactionModel::query()
             ->where('transaction_id', $transactionId)
             ->where('user_id', Auth::id())
             ->first();
@@ -85,23 +93,25 @@ class TransactionService
         return $transaction;
     }
 
-    private function verifyPayment(Transaction $transaction): mixed
+    /**
+     * @throws InvoiceNotFoundException
+     */
+    private function verifyPayment(TransactionModel $transaction): ReceiptInterface
     {
         return Payment::amount($transaction->amount)
             ->transactionId($transaction->transaction_id)
             ->verify();
     }
 
-    private function updateTransactionSuccess(Transaction $transaction, $receipt): void
+    private function updateTransactionSuccess(TransactionModel $transaction, ReceiptInterface $receipt): void
     {
         $transaction->update([
             'status' => Status::Success,
-            'transaction_result' => $receipt,
             'reference_id' => $receipt->getReferenceId(),
         ]);
     }
 
-    private function createPurchase(Transaction $transaction): void
+    private function createPurchase(TransactionModel $transaction): void
     {
         Purchase::query()->create([
             'user_id' => Auth::id(),
@@ -113,6 +123,8 @@ class TransactionService
     private function updateTransactionFailure(string $transactionId): void
     {
         $transaction = $this->getTransactionById($transactionId);
-        $transaction?->update(['status' => Status::Failed]);
+        if ($transaction->status !== Status::Success) {
+            $transaction->update(['status' => Status::Failed]);
+        }
     }
 }

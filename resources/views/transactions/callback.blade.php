@@ -8,12 +8,12 @@
         <div class="card-body">
             @if ($status === 'success')
                 <h5 class="card-title">پرداخت موفق</h5>
-                <p class="card-text">پرداخت شما با موفقیت انجام شد.</p>
-                <p class="card-text">شناسه تراکنش: {{ ltrim($transaction_id, '0') }}</p>
+                <p class="card-text">{{ $message }}</p>
+                <p class="card-text">شناسه پیگیری: {{ $referenceId }}</p>
                 <a href="{{ route('home') }}" class="btn btn-primary">بازگشت به صفحه اصلی</a>
             @else
                 <h5 class="card-title">پرداخت ناموفق</h5>
-                <p class="card-text">پرداخت شما با مشکل مواجه شد. لطفا مجددا تلاش کنید.</p>
+                <p class="card-text">{{ $message }}</p>
                 <a href="{{ route('home') }}" class="btn btn-primary">بازگشت به صفحه اصلی</a>
             @endif
         </div>
