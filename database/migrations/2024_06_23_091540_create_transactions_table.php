@@ -17,13 +17,13 @@ return new class extends Migration
 //            $table->char('payment_id', 32)->index();
             $table->string('payment_id')->comment('Our system creates');
             $table->string('transaction_id')->nullable()->comment('The payment gateway creates');
-            $table->bigInteger('amount');
+            $table->integer('amount');
             $table->bigInteger('reference_id')->nullable();
             $table->enum('status', Status::items());
             $table->morphs('product');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
