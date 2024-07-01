@@ -66,7 +66,6 @@ class Transaction
             'amount' => $invoice->getAmount(),
             'product_type' => get_class($product),
             'product_id' => $product->id,
-            'invoice_details' => $invoice,
             'status' => Status::Pending,
             'user_id' => Auth::id(),
         ]);

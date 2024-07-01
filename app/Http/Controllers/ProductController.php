@@ -25,7 +25,7 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-    public function purchase(Request $request): mixed
+    public function checkout(Request $request): mixed
     {
         try {
             /** @var ProductInterface $product */
