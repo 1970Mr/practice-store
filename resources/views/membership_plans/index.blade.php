@@ -10,7 +10,7 @@
                         <h5 class="card-title">{{ $plan->name }}</h5>
                         <p class="card-text">مدت زمان: {{ $plan->duration ? $plan->duration . ' روز' : 'برای همیشه' }}</p>
                         <p class="card-text">قیمت: {{ $plan->price }} تومان</p>
-                        <form action="/membership-plans/purchase" method="POST">
+                        <form action="{{ route('membership-plans.checkout') }}" method="POST">
                             @csrf
                             <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                             <button type="submit" class="btn btn-primary">خرید پلن</button>

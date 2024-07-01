@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\VerifyRepeatedException;
 use App\Models\MembershipPlan;
-use App\Services\Transaction;
+use App\Services\Transaction\Contracts\ProductInterface;
+use App\Services\Transaction\Transaction;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,14 +26,15 @@ class MembershipPlanController extends Controller
         return view('membership_plans.index', compact('plans'));
     }
 
-    public function purchase(Request $request): mixed
+    public function checkout(Request $request): mixed
     {
         try {
+            /** @var ProductInterface $membershipPlan */
             $membershipPlan = MembershipPlan::query()->findOrFail($request->plan_id);
             $invoice = (new Invoice())->amount($membershipPlan->price);
             $callbackUrl = route('membership-plans.callback');
 
-            return $this->transactionService->purchase($invoice, $membershipPlan, $callbackUrl);
+            return $this->transactionService->checkout($invoice, $membershipPlan, $callbackUrl);
         } catch (Exception $e) {
             return back()->withErrors(['error' => 'Failed to purchase!']);
         }
@@ -41,16 +44,24 @@ class MembershipPlanController extends Controller
     {
         try {
             $transaction_id = $request->get('Authority');
-            $this->transactionService->callback($transaction_id, static function ($transaction) {
+            $referenceId = $this->transactionService->verify($transaction_id, static function ($transaction) {
                 Auth::user()->update([
                     'membership_plan_id' => $transaction->product_id,
                     'membership_expires_at' => now()->addDays($transaction->product->duration),
                 ]);
             });
 
-            return view('transactions.callback', ['status' => 'success', 'transaction_id' => $transaction_id]);
-        } catch (InvalidPaymentException|InvoiceNotFoundException $e) {
-            return view('transactions.callback', ['status' => 'error']);
+            return $this->setView('success', __('transaction_successfully'), $referenceId);
+        } catch (VerifyRepeatedException $e) {
+            $transaction = $this->transactionService->getTransactionById($transaction_id);
+            return $this->setView('success', __('transaction_already_done'), $transaction->reference_id);
+        } catch (InvalidPaymentException|InvoiceNotFoundException|Exception $e) {
+            return $this->setView('error', __('transaction_failed'));
         }
+    }
+
+    public function setView(string $status, string $message, ?int $referenceId = null): View
+    {
+        return view('transactions.callback', compact(['status', 'message', 'referenceId']));
     }
 }
