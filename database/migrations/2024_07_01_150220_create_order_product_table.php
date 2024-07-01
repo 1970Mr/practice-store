@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_product', function (Blueprint $table) {
-            $table->morphs('product');
+            $table->morphs('salable');
             $table->foreignId('order_id')->constrained('orders');
             $table->integer('quantity');
         });
