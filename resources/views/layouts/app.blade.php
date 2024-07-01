@@ -11,6 +11,7 @@
             text-align: right;
         }
     </style>
+    @stack('styles')
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -44,5 +45,24 @@
     @yield('content')
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@stack('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (isset($success) || session('success'))
+        Swal.fire({
+            title: "@lang('Success!')",
+            text: "{{ $success ?? session('success') }}",
+            icon: "success"
+        });
+        @elseif (isset($error) || session('error'))
+        Swal.fire({
+            title: "@lang('Error!')",
+            text: "{{ $error ?? session('error') }}",
+            icon: "error"
+        });
+        @endif
+    });
+</script>
 </body>
 </html>

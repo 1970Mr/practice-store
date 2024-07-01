@@ -5,6 +5,7 @@ use App\Http\Controllers\MembershipPlanController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TransactionController;
+use App\Services\Storage\Contracts\StorageInterface;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
@@ -21,6 +22,13 @@ Route::get('/membership-plans', [MembershipPlanController::class, 'index'])->nam
 Route::post('/membership-plans/checkout', [MembershipPlanController::class, 'checkout'])->name('membership-plans.checkout');
 Route::get('/membership-plans/callback', [MembershipPlanController::class, 'callback'])->name('membership-plans.callback');
 
-Route::get('/cart-items', [CartController::class, 'index'])->name('cart-items.index');
-Route::post('/cart-items/add', [CartController::class, 'add'])->name('cart-items.add');
-Route::post('/cart-items/decrement', [CartController::class, 'decrement'])->name('cart-items.decrement');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::put('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/{product}', [CartController::class, 'update'])->name('cart.delete');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+// Temporary route
+Route::get('/cart/clear', static function (StorageInterface $storage) {
+    $storage->clear();
+})->name('cart.clear');
+

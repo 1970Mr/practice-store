@@ -16,7 +16,7 @@ class Cart
     /**
      * @throws QuantityExceededException
      */
-    public function add(Product $product, int $quantity): void
+    public function add(Product $product, int $quantity = 1): void
     {
         if ($this->has($product)) {
             $quantity = $this->get($product)['quantity'] + $quantity;
@@ -57,11 +57,16 @@ class Cart
 
     public function subtotal(): int
     {
-        $subtotal = 0;
+        $total = 0;
         foreach ($this->all() as $item) {
-            $subtotal += $item->price * $item->quantity;
+            $total += $item->price * $item->quantity;
         }
-        return $subtotal;
+        return $total;
+    }
+
+    public function total($additionalAmount): int
+    {
+        return $this->subtotal() + $additionalAmount;
     }
 
     public function itemsCount(): int

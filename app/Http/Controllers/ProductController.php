@@ -45,12 +45,12 @@ class ProductController extends Controller
             $transaction_id = $request->get('Authority');
             $referenceId = $this->transactionService->verify($transaction_id);
 
-            return $this->setView('success', __('transaction_successfully'), $referenceId);
+            return $this->setView('success', __('Transaction successfully.'), $referenceId);
         } catch (VerifyRepeatedException $e) {
             $transaction = $this->transactionService->getTransactionById($transaction_id);
-            return $this->setView('success', __('transaction_already_done'), $transaction->reference_id);
+            return $this->setView('success', __('Transaction already done.'), $transaction->reference_id);
         } catch (InvalidPaymentException|InvoiceNotFoundException|Exception $e) {
-            return $this->setView('error', __('transaction_failed'));
+            return $this->setView('error', __('Transaction failed.'));
         }
     }
 

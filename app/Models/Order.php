@@ -14,6 +14,8 @@ class Order extends Model
         'salable_type',
     ];
 
+    public const TRANSPORTATION_COSTS = 10000;
+
     public function products(): MorphToMany
     {
         return $this->morphedByMany(Product::class, 'salable');

@@ -11,7 +11,7 @@
                         <p class="card-text">{{ $product->description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <form action="{{ route('cart-items.add') }}" method="POST" class="ms-3">
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="ms-3">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">افزودن به سبد</button>
