@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TransactionController;
 use App\Services\Storage\Contracts\StorageInterface;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 // Product
@@ -39,4 +40,4 @@ Route::get('/cart/clear', static function (StorageInterface $storage) {
 
 // Order
 Route::post('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-Route::get('/orders/callback', [OrderController::class, 'callback'])->name('orders.callback');
+Route::any('/orders/callback/{transaction:internal_code}', [OrderController::class, 'callback'])->name('orders.callback')->withoutMiddleware(VerifyCsrfToken::class);

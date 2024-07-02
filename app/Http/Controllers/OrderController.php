@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Enums\PaymentMethod;
 use App\Exceptions\VerifyRepeatedException;
 use App\Http\Requests\OrderRequest;
+use App\Models\Transaction;
 use App\Services\Order\Order as OrderService;
-use App\Services\Transaction\Transaction;
+use App\Services\Transaction\Transaction as TransactionService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class OrderController extends Controller
 {
     public function __construct(
         private readonly OrderService $orderService,
-        private readonly Transaction $transactionService,
+        private readonly TransactionService $transactionService,
     )
     {
     }
@@ -40,26 +41,27 @@ class OrderController extends Controller
             }
 
             $invoice = (new Invoice())->amount($order->amount);
-            $callbackUrl = route('orders.callback');
+            $callbackUrl = route('orders.callback', $transaction->internal_code);
 
             DB::commit();
             return $this->transactionService->checkout($invoice, $transaction, $callbackUrl);
         } catch (Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
             return back()->with(['error' => __('Payment failed!')]);
         }
     }
 
-    public function callback(Request $request): View
+    public function callback(Request $request, Transaction $transaction): View
     {
         try {
+            // To verify that the transaction belongs to the user
+            $this->transactionService->getTransactionById($transaction->transaction_id);
             $transaction_id = $request->get('Authority');
-            $referenceId = $this->transaction->verify($transaction_id);
+            $referenceId = $this->transactionService->verify($transaction_id);
 
             return $this->setView('success', __('Payment successfully.'), $referenceId);
         } catch (VerifyRepeatedException $e) {
-            $transaction = $this->transaction->getTransactionById($transaction_id);
+            $transaction = $this->transactionService->getTransactionById($transaction->id);
             return $this->setView('success', __('Payment already done!'), $transaction->reference_id);
         } catch (InvalidPaymentException|InvoiceNotFoundException|Exception $e) {
             return $this->setView('error', __('Payment failed!'));

@@ -67,7 +67,7 @@ class Transaction
     {
         $amount = $amount ?? $order->amount;
         return TransactionModel::query()->create([
-            'internal_code' => uniqid('', true),
+            'internal_code' => md5(uniqid('', true)),
             'amount' => $amount,
             'gateway' => $gateway,
             'payment_method' => $paymentMethod,
@@ -79,6 +79,7 @@ class Transaction
 
     private function processPayment(Invoice $invoice, string $callbackUrl, TransactionModel $transaction): mixed
     {
+        Payment::via($transaction->gateway);
         Payment::callbackUrl($callbackUrl);
         $payment = Payment::purchase($invoice, static function ($driver, $transactionId) use ($transaction) {
             $transaction->update(['transaction_id' => $transactionId]);
@@ -94,7 +95,7 @@ class Transaction
             ->where('transaction_id', $transactionId)
             ->where('user_id', Auth::id())
             ->first();
-        abort_if(is_null($transaction), 404, 'Transaction not found');
+        abort_if(is_null($transaction), 404, 'Transaction not found!');
         return $transaction;
     }
 

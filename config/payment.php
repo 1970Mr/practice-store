@@ -109,7 +109,7 @@ return [
             'apiPaymentUrl' => 'https://idpay.ir/p/ws/',
             'apiSandboxPaymentUrl' => 'https://idpay.ir/p/ws-sandbox/',
             'apiVerificationUrl' => 'https://api.idpay.ir/v1.1/payment/verify',
-            'merchantId' => '',
+            'merchantId' => '6a7f99eb-7c20-4412-a972-6dfb7cd253a4',
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using idpay',
             'sandbox' => True, // set it to true for test environments
