@@ -24,7 +24,7 @@ Route::get('/membership-plans/callback', [MembershipPlanController::class, 'call
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-Route::put('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
+Route::patch('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/{product}', [CartController::class, 'update'])->name('cart.delete');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 // Temporary route

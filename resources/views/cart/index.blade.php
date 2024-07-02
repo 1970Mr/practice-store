@@ -56,7 +56,7 @@
                             <ul class="list-group mb-3 p-0">
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>مبلغ کل</span>
-                                    <strong>{{ number_format($subtotal) }} تومان</strong>
+                                    <strong>{{ number_format($cartSubtotal) }} تومان</strong>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>هزینه حمل</span>
@@ -64,7 +64,7 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>مبلغ قابل پرداخت</span>
-                                    <strong>{{ number_format($total) }} تومان</strong>
+                                    <strong>{{ number_format($cartTotal) }} تومان</strong>
                                 </li>
                                 <!-- Add more details if needed -->
                             </ul>

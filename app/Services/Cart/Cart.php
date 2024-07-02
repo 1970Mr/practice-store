@@ -27,7 +27,7 @@ readonly class Cart
     /**
      * @throws QuantityExceededException
      */
-    private function set(Product $product, int $quantity): void
+    public function set(Product $product, int $quantity): void
     {
         if ($quantity <= 0) {
             $this->storage->unset($product->id);
