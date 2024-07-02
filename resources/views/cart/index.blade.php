@@ -52,7 +52,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">خلاصه سفارش</h5>
+                            <h5 class="card-title mb-3">خلاصه سفارش</h5>
                             <ul class="list-group mb-3 p-0">
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>مبلغ کل</span>
@@ -71,7 +71,7 @@
                             <form action="{{ route('cart.checkout') }}" method="POST">
                                 @csrf
                                 <div class="form-group mb-3">
-                                    <label for="payment_method">روش پرداخت</label>
+                                    <label for="payment_method" class="mb-2">روش پرداخت</label>
                                     <select class="form-control" id="payment_method" name="payment_method">
                                         <option value="online">آنلاین</option>
                                         <option value="cash">نقدی</option>
@@ -79,7 +79,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group mb-3" id="gateway_options">
-                                    <label for="payment_gateway">انتخاب درگاه پرداخت</label>
+                                    <label for="payment_gateway" class="mb-2">انتخاب درگاه پرداخت</label>
                                     <select class="form-control" id="payment_gateway" name="payment_gateway">
                                         <option value="zarinpal">زرین پال</option>
                                         <option value="idpay">IDPay</option>

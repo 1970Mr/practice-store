@@ -30,7 +30,7 @@ readonly class Cart
     public function set(Product $product, int $quantity): void
     {
         if ($quantity <= 0) {
-            $this->storage->unset($product->id);
+            $this->delete($product->id);
             return;
         }
 
@@ -77,6 +77,11 @@ readonly class Cart
     public function has(Product $product): bool
     {
         return $this->storage->exists($product->id);
+    }
+
+    public function delete(Product $product): void
+    {
+        $this->storage->unset($product->id);
     }
 
     public function clear(): void

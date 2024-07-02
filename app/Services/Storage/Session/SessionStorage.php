@@ -33,7 +33,7 @@ class SessionStorage implements StorageInterface
 
     public function unset(int $key): void
     {
-        Session::forget($key);
+        Session::forget($this->bucket . '.' . $key);
     }
 
     public function clear(): void

@@ -44,4 +44,10 @@ class CartController extends Controller
             return back()->with('error', __('Quantity exceeded!'));
         }
     }
+
+    public function delete(Product $product): RedirectResponse
+    {
+        $this->cart->delete($product);
+        return back()->with('success', __('The product was removed from the cart.'));
+    }
 }

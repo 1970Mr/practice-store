@@ -6,5 +6,6 @@
     "Transaction already done.": "عمليات پرداخت موفق بوده و قبلا عملیات وریفای تراكنش انجام شده است.",
     "Added to cart.": "به سبد خرید اضافه شد.",
     "Quantity exceeded!": "مقدار بیش از حد!",
-    "The shopping cart has been updated.": "سبد خرید بروزرسانی شد."
+    "The shopping cart has been updated.": "سبد خرید بروزرسانی شد.",
+    "The product was removed from the cart.": "محصول از سبد خرید حذف شد."
 }

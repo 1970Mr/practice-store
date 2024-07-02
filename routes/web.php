@@ -8,24 +8,29 @@ use App\Http\Controllers\TransactionController;
 use App\Services\Storage\Contracts\StorageInterface;
 use Illuminate\Support\Facades\Route;
 
+// Product
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products/checkout', [ProductController::class, 'checkout'])->name('products.checkout');
 Route::get('/products/callback', [ProductController::class, 'callback'])->name('products.callback');
 
+// Purchase
 Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
 Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
 
+// Transaction
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
+// Membership
 Route::get('/membership-plans', [MembershipPlanController::class, 'index'])->name('membership-plans.index');
 Route::post('/membership-plans/checkout', [MembershipPlanController::class, 'checkout'])->name('membership-plans.checkout');
 Route::get('/membership-plans/callback', [MembershipPlanController::class, 'callback'])->name('membership-plans.callback');
 
+// Product
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/{product}', [CartController::class, 'update'])->name('cart.delete');
+Route::delete('/cart/{product}', [CartController::class, 'delete'])->name('cart.delete');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 // Temporary route
 Route::get('/cart/clear', static function (StorageInterface $storage) {
