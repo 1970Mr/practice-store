@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PaymentGateway;
+use App\Enums\PaymentMethod;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class OrderRequest extends FormRequest
 {
@@ -21,9 +24,11 @@ class OrderRequest extends FormRequest
      */
     public function rules(): array
     {
+        $paymentMethods = implode(',', PaymentMethod::values());
+        $paymentGateways = implode(',', PaymentGateway::values());
         return [
-            'payment_method' => 'required',
-            'payment_gateway' => 'required_if:payment_method,online',
+            'payment_method' => 'required|in:' . $paymentMethods,
+            'payment_gateway' => 'required_if:payment_method,' . PaymentMethod::ONLINE->value . '|in:' . $paymentGateways,
         ];
     }
 

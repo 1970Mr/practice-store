@@ -8,5 +8,11 @@
     "Quantity exceeded!": "مقدار بیش از حد!",
     "The shopping cart has been updated.": "سبد خرید بروزرسانی شد.",
     "The product was removed from the cart.": "محصول از سبد خرید حذف شد.",
-    "Payment Method": "روش پرداخت"
+    "Payment Method": "روش پرداخت",
+    "online": "آنلاین",
+    "cash": "نقدی",
+    "card_to_card": "کارت به کارت",
+    "zarinpal": "زرین پال",
+    "idpay": "IDPay",
+    "Your order has been successfully placed.": "سفارش شما با موفقیت انجام شد."
 }

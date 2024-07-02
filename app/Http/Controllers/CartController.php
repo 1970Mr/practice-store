@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentGateway;
+use App\Enums\PaymentMethod;
 use App\Exceptions\QuantityExceededException;
 use App\Http\Requests\CartRequest;
 use App\Models\Order;
@@ -22,7 +24,9 @@ class CartController extends Controller
         $cartSubtotal = $this->cart->subtotal();
         $transportationCosts = Order::TRANSPORTATION_COSTS;
         $cartTotal = $this->cart->total($transportationCosts);
-        return view('cart.index', compact(['cartItems', 'cartSubtotal', 'cartTotal', 'transportationCosts']));
+        $paymentMethods = PaymentMethod::values();
+        $paymentGateways = PaymentGateway::values();
+        return view('cart.index', compact(['cartItems', 'cartSubtotal', 'cartTotal', 'transportationCosts', 'paymentMethods', 'paymentGateways']));
     }
 
     public function add(Product $product): RedirectResponse

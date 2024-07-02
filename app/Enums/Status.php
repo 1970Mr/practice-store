@@ -2,18 +2,13 @@
 
 namespace App\Enums;
 
-enum Status
-{
-    case Success;
-    case Pending;
-    case Failed;
+use App\Traits\EnumValuesTrait;
 
-    public static function items(): array
-    {
-        return [
-            self::Success->name,
-            self::Pending->name,
-            self::Failed->name,
-        ];
-    }
+enum Status: string
+{
+    use EnumValuesTrait;
+
+    case SUCCESS = 'success';
+    case PENDING = 'pending';
+    case FAILED = 'failed';
 }

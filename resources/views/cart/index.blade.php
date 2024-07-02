@@ -72,16 +72,17 @@
                                 <div class="form-group mb-3">
                                     <label for="payment_method" class="mb-2">روش پرداخت</label>
                                     <select class="form-control" id="payment_method" name="payment_method">
-                                        <option value="online">آنلاین</option>
-                                        <option value="cash">نقدی</option>
-                                        <option value="card_to_card">کارت به کارت</option>
+                                        @foreach($paymentMethods as $paymentMethod)
+                                            <option value="{{ $paymentMethod }}" @if($paymentMethod === 'online') @endif>@lang($paymentMethod)</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group mb-3" id="gateway_options">
                                     <label for="payment_gateway" class="mb-2">انتخاب درگاه پرداخت</label>
                                     <select class="form-control" id="payment_gateway" name="payment_gateway">
-                                        <option value="zarinpal">زرین پال</option>
-                                        <option value="idpay">IDPay</option>
+                                        @foreach($paymentGateways as $paymentGateway)
+                                            <option value="{{ $paymentGateway }}">@lang($paymentGateway)</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group mb-3 d-none" id="card_to_card_info">
@@ -90,7 +91,7 @@
                                     <label for="card_number" class="my-2">نام صاحب کارت</label>
                                     <input type="text" class="form-control" id="card_number" value="آقا یا خانم فلانی" readonly>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                <button type="submit" class="btn btn-primary btn-block">ثبت سفارش</button>
                             </form>
                         </div>
                     </div>

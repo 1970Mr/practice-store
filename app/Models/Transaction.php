@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ class Transaction extends Model
         'internal_code',
         'transaction_id',
         'amount',
+        'payment_method',
         'gateway',
         'reference_id',
         'order_id',
@@ -29,10 +31,11 @@ class Transaction extends Model
         return $this->belongsTo(Order::class);
     }
 
-    protected function casts(): array
-    {
-        return [
-            'status' => Status::class,
-        ];
-    }
+//    protected function casts(): array
+//    {
+//        return [
+//            'status' => Status::class,
+//            'payment_method' => PaymentMethod::class,
+//        ];
+//    }
 }

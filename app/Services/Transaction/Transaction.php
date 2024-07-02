@@ -19,10 +19,9 @@ class Transaction
     /**
      * @throws Exception
      */
-    public function checkout(Invoice $invoice, Order $order, string $callbackUrl): mixed
+    public function checkout(Invoice $invoice, TransactionModel $transaction, string $callbackUrl): mixed
     {
         try {
-            $transaction = $this->createTransaction($invoice, $order);
             return $this->processPayment($invoice, $callbackUrl, $transaction);
         } catch (Exception $e) {
             logger($e->getMessage());
@@ -57,13 +56,23 @@ class Transaction
         }
     }
 
-    private function createTransaction(Invoice $invoice, Order $order): TransactionModel
+    /**
+     * Create a new transaction for an order.
+     *
+     * @param Order $order
+     * @param int|null $amount  The transaction amount (optional). If this value is null, the default amount from the order ($order->amount) is used.
+     * @return TransactionModel
+     */
+    public function createTransaction(Order $order, string $paymentMethod, ?string $gateway = null, ?int $amount = null): TransactionModel
     {
+        $amount = $amount ?? $order->amount;
         return TransactionModel::query()->create([
             'internal_code' => uniqid('', true),
-            'amount' => $invoice->getAmount(),
+            'amount' => $amount,
+            'gateway' => $gateway,
+            'payment_method' => $paymentMethod,
             'order_id' => $order->id,
-            'status' => Status::Pending,
+            'status' => Status::PENDING,
             'user_id' => Auth::id(),
         ]);
     }
@@ -102,7 +111,7 @@ class Transaction
     private function updateTransactionSuccess(TransactionModel $transaction, ReceiptInterface $receipt): void
     {
         $transaction->update([
-            'status' => Status::Success,
+            'status' => Status::SUCCESS,
             'reference_id' => $receipt->getReferenceId(),
         ]);
     }
@@ -110,8 +119,8 @@ class Transaction
     private function updateTransactionFailure(string $transactionId): void
     {
         $transaction = $this->getTransactionById($transactionId);
-        if ($transaction->status !== Status::Success) {
-            $transaction->update(['status' => Status::Failed]);
+        if ($transaction->status !== Status::SUCCESS) {
+            $transaction->update(['status' => Status::FAILED]);
         }
     }
 }
