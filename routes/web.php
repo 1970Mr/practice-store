@@ -39,4 +39,4 @@ Route::get('/cart/clear', static function (StorageInterface $storage) {
 
 // Order
 Route::post('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-Route::post('/orders/callback', [OrderController::class, 'callback'])->name('orders.callback');
+Route::get('/orders/callback', [OrderController::class, 'callback'])->name('orders.callback');
