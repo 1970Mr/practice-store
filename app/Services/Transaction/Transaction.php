@@ -4,9 +4,8 @@ namespace App\Services\Transaction;
 
 use App\Enums\Status;
 use App\Exceptions\VerifyRepeatedException;
+use App\Models\Order;
 use App\Models\Transaction as TransactionModel;
-use App\Services\Order\Order;
-use App\Services\Transaction\Contracts\ProductInterface;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Shetabit\Multipay\Contracts\ReceiptInterface;
@@ -61,7 +60,7 @@ class Transaction
     private function createTransaction(Invoice $invoice, Order $order): TransactionModel
     {
         return TransactionModel::query()->create([
-            'payment_id' => uniqid('', true),
+            'internal_code' => uniqid('', true),
             'amount' => $invoice->getAmount(),
             'order_id' => $order->id,
             'status' => Status::Pending,

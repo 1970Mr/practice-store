@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MembershipPlanController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TransactionController;
@@ -31,9 +32,11 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/{product}', [CartController::class, 'delete'])->name('cart.delete');
-Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 // Temporary route
 Route::get('/cart/clear', static function (StorageInterface $storage) {
     $storage->clear();
 })->name('cart.clear');
 
+// Order
+Route::post('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+Route::post('/orders/callback', [OrderController::class, 'callback'])->name('orders.callback');

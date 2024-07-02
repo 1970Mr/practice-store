@@ -67,7 +67,7 @@
                                     <strong>{{ number_format($cartTotal) }} تومان</strong>
                                 </li>
                             </ul>
-                            <form action="{{ route('cart.checkout') }}" method="POST">
+                            <form action="{{ route('orders.checkout') }}" method="POST">
                                 @csrf
                                 <div class="form-group mb-3">
                                     <label for="payment_method" class="mb-2">روش پرداخت</label>

@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Services\Transaction\Contracts\ProductInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Product extends Model implements ProductInterface
 {
@@ -36,9 +36,9 @@ class Product extends Model implements ProductInterface
         return $this->morphMany(Transaction::class, 'product');
     }
 
-    public function orders(): MorphToMany
+    public function orders(): BelongsToMany
     {
-        return $this->morphToMany(Order::class, 'salable');
+        return $this->belongsToMany(Order::class);
     }
 
     public function hasStock(int $quantity): bool

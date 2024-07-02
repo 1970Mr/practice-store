@@ -14,13 +14,13 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-//            $table->char('payment_id', 32)->index();
-            $table->string('payment_id')->comment('Our system creates');
+//            $table->char('internal_code ', 32)->index();
+            $table->string('internal_code')->unique()->comment('Our system creates');
             $table->string('transaction_id')->nullable()->comment('The payment gateway creates');
             $table->integer('amount');
             $table->bigInteger('reference_id')->nullable();
             $table->enum('status', Status::items());
-            $table->morphs('product');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

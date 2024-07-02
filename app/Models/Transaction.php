@@ -3,20 +3,18 @@
 namespace App\Models;
 
 use App\Enums\Status;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
     protected $fillable = [
-        'payment_id',
+        'internal_code',
         'transaction_id',
         'amount',
         'gateway',
         'reference_id',
-        'product_type',
-        'product_id',
+        'order_id',
         'status',
         'user_id',
     ];
@@ -26,9 +24,9 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product(): MorphTo
+    public function order(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Order::class);
     }
 
     protected function casts(): array

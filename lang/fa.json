@@ -7,5 +7,7 @@
     "Added to cart.": "به سبد خرید اضافه شد.",
     "Quantity exceeded!": "مقدار بیش از حد!",
     "The shopping cart has been updated.": "سبد خرید بروزرسانی شد.",
-    "The product was removed from the cart.": "محصول از سبد خرید حذف شد."
+    "The product was removed from the cart.": "محصول از سبد خرید حذف شد.",
+    "Payment Method": "روش پرداخت",
+    "Payment failed!": "پرداخت ناموفق بود!"
 }
