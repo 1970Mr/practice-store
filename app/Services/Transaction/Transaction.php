@@ -4,8 +4,8 @@ namespace App\Services\Transaction;
 
 use App\Enums\Status;
 use App\Exceptions\VerifyRepeatedException;
-use App\Models\Purchase;
 use App\Models\Transaction as TransactionModel;
+use App\Services\Order\Order;
 use App\Services\Transaction\Contracts\ProductInterface;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +20,10 @@ class Transaction
     /**
      * @throws Exception
      */
-    public function checkout(Invoice $invoice, ProductInterface $product, string $callbackUrl): mixed
+    public function checkout(Invoice $invoice, Order $order, string $callbackUrl): mixed
     {
         try {
-            $transaction = $this->createTransaction($invoice, $product);
+            $transaction = $this->createTransaction($invoice, $order);
             return $this->processPayment($invoice, $callbackUrl, $transaction);
         } catch (Exception $e) {
             logger($e->getMessage());
@@ -42,7 +42,6 @@ class Transaction
             $transaction = $this->getTransactionById($transactionId);
             $receipt = $this->verifyPayment($transaction);
             $this->updateTransactionSuccess($transaction, $receipt);
-            $this->createPurchase($transaction);
 
             if ($callbackFunc) {
                 $callbackFunc($transaction);
@@ -59,13 +58,12 @@ class Transaction
         }
     }
 
-    private function createTransaction(Invoice $invoice, ProductInterface $product): TransactionModel
+    private function createTransaction(Invoice $invoice, Order $order): TransactionModel
     {
         return TransactionModel::query()->create([
             'payment_id' => uniqid('', true),
             'amount' => $invoice->getAmount(),
-            'product_type' => get_class($product),
-            'product_id' => $product->id,
+            'order_id' => $order->id,
             'status' => Status::Pending,
             'user_id' => Auth::id(),
         ]);
@@ -107,15 +105,6 @@ class Transaction
         $transaction->update([
             'status' => Status::Success,
             'reference_id' => $receipt->getReferenceId(),
-        ]);
-    }
-
-    private function createPurchase(TransactionModel $transaction): void
-    {
-        Purchase::query()->create([
-            'user_id' => Auth::id(),
-            'product_type' => $transaction->product_type,
-            'product_id' => $transaction->product_id,
         ]);
     }
 
