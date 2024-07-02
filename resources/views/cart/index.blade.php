@@ -66,7 +66,6 @@
                                     <span>مبلغ قابل پرداخت</span>
                                     <strong>{{ number_format($cartTotal) }} تومان</strong>
                                 </li>
-                                <!-- Add more details if needed -->
                             </ul>
                             <form action="{{ route('cart.checkout') }}" method="POST">
                                 @csrf
@@ -75,7 +74,7 @@
                                     <select class="form-control" id="payment_method" name="payment_method">
                                         <option value="online">آنلاین</option>
                                         <option value="cash">نقدی</option>
-                                        <!-- Add more payment methods if needed -->
+                                        <option value="card_to_card">کارت به کارت</option>
                                     </select>
                                 </div>
                                 <div class="form-group mb-3" id="gateway_options">
@@ -84,6 +83,12 @@
                                         <option value="zarinpal">زرین پال</option>
                                         <option value="idpay">IDPay</option>
                                     </select>
+                                </div>
+                                <div class="form-group mb-3 d-none" id="card_to_card_info">
+                                    <label for="card_number" class="mb-2">شماره کارت مقصد</label>
+                                    <input type="text" class="form-control" id="card_number" value="1234-5678-9012-3456" readonly>
+                                    <label for="card_number" class="my-2">نام صاحب کارت</label>
+                                    <input type="text" class="form-control" id="card_number" value="آقا یا خانم فلانی" readonly>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
                             </form>
@@ -98,12 +103,18 @@
         document.addEventListener('DOMContentLoaded', function () {
             const paymentMethodSelect = document.getElementById('payment_method');
             const gatewayOptions = document.getElementById('gateway_options');
+            const cardToCardInfo = document.getElementById('card_to_card_info');
 
             paymentMethodSelect.addEventListener('change', function () {
                 if (this.value === 'online') {
                     gatewayOptions.classList.remove('d-none');
+                    cardToCardInfo.classList.add('d-none');
+                } else if (this.value === 'card_to_card') {
+                    cardToCardInfo.classList.remove('d-none');
+                    gatewayOptions.classList.add('d-none');
                 } else {
                     gatewayOptions.classList.add('d-none');
+                    cardToCardInfo.classList.add('d-none');
                 }
             });
         });
