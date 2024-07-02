@@ -1,3 +1,4 @@
+@inject('cart' , 'App\Services\Cart\Cart')
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -23,19 +24,24 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/products">محصولات</a>
+                    <a class="nav-link" href="{{ route('products.index') }}">محصولات</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/purchases">خریدها</a>
+                    <a class="nav-link" href="{{ route('purchases.index') }}">خریدها</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/transactions">تراکنش‌ها</a>
+                    <a class="nav-link" href="{{ route('transactions.index') }}">تراکنش‌ها</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/membership-plans">پلن‌های عضویت</a>
+                    <a class="nav-link" href="{{ route('membership-plans.index') }}">پلن‌های عضویت</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cart">سبد خرید</a>
+                    <a class="nav-link" href="{{ route('cart.index') }}">
+                        سبد خرید
+                        @if(isset($cart) && $cart->itemCount() > 0)
+                            <span class="badge bg-danger">{{ $cart->itemCount() }}</span>
+                        @endif
+                    </a>
                 </li>
             </ul>
         </div>

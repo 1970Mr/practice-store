@@ -7,9 +7,9 @@ use App\Models\Product;
 use App\Services\Storage\Contracts\StorageInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-class Cart
+readonly class Cart
 {
-    public function __construct(private readonly StorageInterface $storage)
+    public function __construct(private StorageInterface $storage)
     {
     }
 
@@ -69,7 +69,7 @@ class Cart
         return $this->subtotal() + $additionalAmount;
     }
 
-    public function itemsCount(): int
+    public function itemCount(): int
     {
         return $this->storage->count();
     }

@@ -112,8 +112,8 @@ return [
             'merchantId' => '',
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using idpay',
-            'sandbox' => false, // set it to true for test environments
-            'currency' => 'R', //Can be R, T (Rial, Toman)
+            'sandbox' => True, // set it to true for test environments
+            'currency' => 'T', //Can be R, T (Rial, Toman)
         ],
         'irankish' => [
             'apiPurchaseUrl' => 'https://ikc.shaparak.ir/api/v3/tokenization/make',

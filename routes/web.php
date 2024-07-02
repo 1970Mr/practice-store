@@ -9,11 +9,11 @@ use App\Services\Storage\Contracts\StorageInterface;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
-Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products/checkout', [ProductController::class, 'checkout'])->name('products.checkout');
 Route::get('/products/callback', [ProductController::class, 'callback'])->name('products.callback');
 
-Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases');
+Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
 Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
