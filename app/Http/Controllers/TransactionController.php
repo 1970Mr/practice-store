@@ -10,6 +10,7 @@ use App\Services\Cart\Cart;
 use App\Services\Order\Order as OrderService;
 use App\Services\Transaction\Transaction as TransactionService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
@@ -56,11 +57,12 @@ class TransactionController extends Controller
         }
     }
 
-    public function callback(Transaction $transaction): View
+    public function callback(Request $request, Transaction $transaction): View
     {
         try {
             // To verify that the transaction belongs to the user
             $this->transactionService->ensureTransactionBelongsToUser($transaction->transaction_id);
+            $transaction->update(['callback_payload' => $request->all()]);
             $referenceId = $this->transactionService->verify($transaction);
 
             // Clear the cart items

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->enum('payment_method', PaymentMethod::values());
             $table->string('gateway')->nullable();
+            $table->text('callback_payload')->nullable();
             $table->bigInteger('reference_id')->nullable();
             $table->enum('status', Status::values());
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
