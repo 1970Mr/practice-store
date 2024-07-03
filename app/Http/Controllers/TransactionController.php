@@ -4,18 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Enums\PaymentMethod;
 use App\Exceptions\VerifyRepeatedException;
-use App\Http\Requests\OrderRequest;
+use App\Http\Requests\TransactionRequest;
 use App\Models\Transaction;
 use App\Services\Cart\Cart;
 use App\Services\Order\Order as OrderService;
 use App\Services\Transaction\Transaction as TransactionService;
+use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Exceptions\InvoiceNotFoundException;
 use Shetabit\Multipay\Invoice;
-use Exception;
 
 class TransactionController extends Controller
 {
@@ -27,7 +26,7 @@ class TransactionController extends Controller
     {
     }
 
-    public function checkout(OrderRequest $request): mixed
+    public function checkout(TransactionRequest $request): mixed
     {
         DB::beginTransaction();
         try {

@@ -27,9 +27,6 @@
                     <a class="nav-link" href="{{ route('products.index') }}">محصولات</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('transactions.index') }}">تراکنش‌ها</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{{ route('membership-plans.index') }}">پلن‌های عضویت</a>
                 </li>
                 <li class="nav-item">

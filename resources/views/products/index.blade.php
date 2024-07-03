@@ -16,7 +16,7 @@
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">افزودن به سبد</button>
                                 </form>
-                                <form action="{{ route('products.checkout') }}" method="POST">
+                                <form action="{{ route('transactions.checkout') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">خرید مستقیم</button>

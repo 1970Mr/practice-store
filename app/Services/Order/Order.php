@@ -6,9 +6,9 @@ use App\Models\Order as OrderModel;
 use App\Services\Cart\Cart;
 use Illuminate\Support\Facades\Auth;
 
-class Order
+readonly class Order
 {
-    public function __construct(private readonly Cart $cart)
+    public function __construct(private Cart $cart)
     {
     }
 

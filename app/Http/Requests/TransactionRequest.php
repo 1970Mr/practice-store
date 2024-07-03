@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use App\Enums\PaymentGateway;
 use App\Enums\PaymentMethod;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
-class OrderRequest extends FormRequest
+class TransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

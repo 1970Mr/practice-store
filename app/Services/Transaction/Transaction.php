@@ -104,14 +104,14 @@ class Transaction
     private function updateTransactionSuccess(TransactionModel $transaction, ReceiptInterface $receipt): void
     {
         $transaction->update([
-            'status' => Status::SUCCESS,
+            'status' => Status::SUCCESS->value,
             'reference_id' => $receipt->getReferenceId(),
         ]);
     }
 
     private function updateTransactionFailure(TransactionModel $transaction): void
     {
-        if ($transaction->status !== Status::SUCCESS) {
+        if ($transaction->status !== Status::SUCCESS->value) {
             $transaction->update(['status' => Status::FAILED]);
         }
     }

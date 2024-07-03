@@ -11,15 +11,11 @@ use Illuminate\Support\Facades\Route;
 // Product
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::post('/products/checkout', [ProductController::class, 'checkout'])->name('products.checkout');
-Route::get('/products/callback', [ProductController::class, 'callback'])->name('products.callback');
 
 // Membership
 Route::get('/membership-plans', [MembershipPlanController::class, 'index'])->name('membership-plans.index');
-Route::post('/membership-plans/checkout', [MembershipPlanController::class, 'checkout'])->name('membership-plans.checkout');
-Route::get('/membership-plans/callback', [MembershipPlanController::class, 'callback'])->name('membership-plans.callback');
 
-// Product
+// Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
@@ -31,5 +27,6 @@ Route::post('/transactions/checkout', [TransactionController::class, 'checkout']
 Route::any('/transactions/callback/{transaction:internal_code}', [TransactionController::class, 'callback'])->name('transactions.callback')
     ->withoutMiddleware(VerifyCsrfToken::class);
 
+// Order
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');

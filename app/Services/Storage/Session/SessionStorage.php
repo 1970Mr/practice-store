@@ -5,9 +5,9 @@ namespace App\Services\Storage\Session;
 use App\Services\Storage\Contracts\StorageInterface;
 use Illuminate\Support\Facades\Session;
 
-class SessionStorage implements StorageInterface
+readonly class SessionStorage implements StorageInterface
 {
-    public function __construct(private readonly string $bucket = 'default')
+    public function __construct(private string $bucket = 'default')
     {
     }
 
