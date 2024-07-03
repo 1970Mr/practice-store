@@ -4,11 +4,11 @@ namespace App\Enums;
 
 use App\Traits\EnumValuesTrait;
 
-enum Status: string
+enum TransactionStatus: string
 {
     use EnumValuesTrait;
 
-    case SUCCESS = 'success';
     case PENDING = 'pending';
+    case SUCCESS = 'success';
     case FAILED = 'failed';
 }

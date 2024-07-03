@@ -9,7 +9,7 @@
     "Payment failed!": "پرداخت شما با مشکل مواجه شد! لطفا مجددا تلاش کنید.",
     "Payment already done!": "عمليات پرداخت موفق بوده و قبلا عملیات اعتبارسنجی تراكنش انجام شده است.",
     "Added to cart.": "به سبد خرید اضافه شد.",
-    "Quantity exceeded!": "مقدار بیش از حد!",
+    "Insufficient stock!": "موجودی ناکافی!",
     "The shopping cart has been updated.": "سبد خرید بروزرسانی شد.",
     "The product was removed from the cart.": "محصول از سبد خرید حذف شد.",
     "Payment Method": "روش پرداخت",

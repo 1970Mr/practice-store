@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\PaymentMethod;
-use App\Enums\Status;
+use App\Enums\TransactionStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('payment_method', PaymentMethod::values());
             $table->string('gateway')->nullable();
             $table->bigInteger('reference_id')->nullable();
-            $table->enum('status', Status::values());
+            $table->enum('status', TransactionStatus::values())->default(TransactionStatus::PENDING->value);
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

@@ -35,7 +35,7 @@ class CartController extends Controller
             $this->cart->add($product);
             return back()->with('success', __('Added to cart.'));
         } catch (QuantityExceededException $e) {
-            return back()->with('error', __('Quantity exceeded!'));
+            return back()->with('error', __('Insufficient stock!'));
         }
     }
 
@@ -45,7 +45,7 @@ class CartController extends Controller
             $this->cart->set($product, $request->get('quantity'));
             return back()->with('success', __('The shopping cart has been updated.'));
         } catch (QuantityExceededException $e) {
-            return back()->with('error', __('Quantity exceeded!'));
+            return back()->with('error', __('Insufficient stock!'));
         }
     }
 

@@ -3,7 +3,7 @@
 namespace App\Services\Transaction;
 
 use App\Enums\PaymentMethod;
-use App\Enums\Status;
+use App\Enums\TransactionStatus;
 use App\Exceptions\VerifyRepeatedException;
 use App\Models\Order;
 use App\Models\Transaction as TransactionModel;
@@ -64,7 +64,7 @@ class Transaction
             'gateway' => $gateway,
             'payment_method' => $paymentMethod,
             'order_id' => $order->id,
-            'status' => Status::PENDING,
+            'status' => TransactionStatus::PENDING,
             'user_id' => Auth::id(),
         ]);
     }
@@ -104,15 +104,15 @@ class Transaction
     private function updateTransactionSuccess(TransactionModel $transaction, ReceiptInterface $receipt): void
     {
         $transaction->update([
-            'status' => Status::SUCCESS->value,
+            'status' => TransactionStatus::SUCCESS->value,
             'reference_id' => $receipt->getReferenceId(),
         ]);
     }
 
     private function updateTransactionFailure(TransactionModel $transaction): void
     {
-        if ($transaction->status !== Status::SUCCESS->value) {
-            $transaction->update(['status' => Status::FAILED]);
+        if ($transaction->status !== TransactionStatus::SUCCESS->value) {
+            $transaction->update(['status' => TransactionStatus::FAILED]);
         }
     }
 }

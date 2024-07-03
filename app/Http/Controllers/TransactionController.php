@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PaymentMethod;
+use App\Enums\TransactionStatus;
+use App\Exceptions\QuantityExceededException;
 use App\Exceptions\VerifyRepeatedException;
 use App\Http\Requests\TransactionRequest;
+use App\Models\Order;
 use App\Models\Transaction;
 use App\Services\Cart\Cart;
 use App\Services\Order\Order as OrderService;
@@ -22,7 +25,6 @@ class TransactionController extends Controller
     public function __construct(
         private readonly OrderService $orderService,
         private readonly TransactionService $transactionService,
-        private readonly Cart $cartService,
     )
     {
     }
@@ -40,8 +42,7 @@ class TransactionController extends Controller
 
             // If the payment is not online
             if ($request->payment_method !== PaymentMethod::ONLINE->value) {
-                // Clear the cart items
-                $this->cartService->clear();
+                $this->orderService->orderCompletion($transaction->order);
                 DB::commit();
                 return to_route('home')->with(['success' => __('Your order has been successfully placed.')]);
             }
@@ -62,11 +63,10 @@ class TransactionController extends Controller
         try {
             // To verify that the transaction belongs to the user
             $this->transactionService->ensureTransactionBelongsToUser($transaction->transaction_id);
-            $transaction->callback()->firstOrCreate(['callback_payload' => $request->all()]);
+            $transaction->callback()->firstOrCreate( ['callback_payload' => $request->all()] );
             $referenceId = $this->transactionService->verify($transaction);
 
-            // Clear the cart items
-            $this->cartService->clear();
+            $this->orderService->orderCompletion($transaction->order);
             return $this->setView('success', __('Payment successfully.'), $referenceId);
         } catch (VerifyRepeatedException $e) {
             return $this->setView('success', __('Payment already done!'), $transaction->reference_id);

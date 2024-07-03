@@ -44,7 +44,7 @@
                                 <div class="mt-3">
                                         @foreach ($order->transactions as $transaction)
                                         <div>
-                                            <strong>وضعیت:</strong> {{ __($transaction->status) }}<br>
+                                            <strong>وضعیت پرداخت:</strong> {{ __($transaction->status) }}<br>
                                         </div>
                                     @endforeach
                                 </div>
