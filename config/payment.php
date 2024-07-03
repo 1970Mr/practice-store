@@ -112,7 +112,7 @@ return [
             'merchantId' => '6a7f99eb-7c20-4412-a972-6dfb7cd253a4',
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using idpay',
-            'sandbox' => True, // set it to true for test environments
+            'sandbox' => true, // set it to true for test environments
             'currency' => 'T', //Can be R, T (Rial, Toman)
         ],
         'irankish' => [

@@ -27,9 +27,6 @@
                     <a class="nav-link" href="{{ route('products.index') }}">محصولات</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('purchases.index') }}">خریدها</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{{ route('transactions.index') }}">تراکنش‌ها</a>
                 </li>
                 <li class="nav-item">
@@ -59,13 +56,15 @@
         Swal.fire({
             title: "@lang('Success!')",
             text: "{{ $success ?? session('success') }}",
-            icon: "success"
+            icon: "success",
+            confirmButtonText: "@lang('Ok')",
         });
         @elseif (isset($error) || session('error'))
         Swal.fire({
             title: "@lang('Error!')",
             text: "{{ $error ?? session('error') }}",
-            icon: "error"
+            icon: "error",
+            confirmButtonText: "@lang('Ok')",
         });
         @endif
     });

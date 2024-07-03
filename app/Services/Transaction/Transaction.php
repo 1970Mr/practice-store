@@ -13,31 +13,19 @@ use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Exceptions\InvoiceNotFoundException;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Transaction
 {
-    /**
-     * @throws Exception
-     */
-    public function checkout(Invoice $invoice, TransactionModel $transaction, string $callbackUrl): mixed
-    {
-        try {
-            return $this->processPayment($invoice, $callbackUrl, $transaction);
-        } catch (Exception $e) {
-            logger($e->getMessage());
-            throw $e;
-        }
-    }
-
     /**
      * @throws InvoiceNotFoundException
      * @throws InvalidPaymentException
      * @throws VerifyRepeatedException
      */
-    public function verify(string $transactionId, ?callable $callbackFunc = null): int
+    public function verify(TransactionModel $transaction, ?callable $callbackFunc = null): int
     {
         try {
-            $transaction = $this->getTransactionById($transactionId);
             $receipt = $this->verifyPayment($transaction);
             $this->updateTransactionSuccess($transaction, $receipt);
 
@@ -51,7 +39,7 @@ class Transaction
                 throw new VerifyRepeatedException();
             }
             logger($e->getMessage());
-            $this->updateTransactionFailure($transactionId);
+            $this->updateTransactionFailure($transaction);
             throw $e;
         }
     }
@@ -60,7 +48,7 @@ class Transaction
      * Create a new transaction for an order.
      *
      * @param Order $order
-     * @param int|null $amount  The transaction amount (optional). If this value is null, the default amount from the order ($order->amount) is used.
+     * @param int|null $amount The transaction amount (optional). If this value is null, the default amount from the order ($order->amount) is used.
      * @return TransactionModel
      */
     public function createTransaction(Order $order, string $paymentMethod, ?string $gateway = null, ?int $amount = null): TransactionModel
@@ -77,26 +65,26 @@ class Transaction
         ]);
     }
 
-    private function processPayment(Invoice $invoice, string $callbackUrl, TransactionModel $transaction): mixed
+    public function processPayment(TransactionModel $transaction, Invoice $invoice, string $callbackUrl): mixed
     {
         Payment::via($transaction->gateway);
         Payment::callbackUrl($callbackUrl);
         $payment = Payment::purchase($invoice, static function ($driver, $transactionId) use ($transaction) {
             $transaction->update(['transaction_id' => $transactionId]);
         });
-
         return $payment->pay()->render();
     }
 
-    public function getTransactionById(string $transactionId): TransactionModel
+    /**
+     * @throws HttpException|NotFoundHttpException
+     */
+    public function ensureTransactionBelongsToUser(string $transactionId): void
     {
-        /** @var TransactionModel $transaction */
         $transaction = TransactionModel::query()
             ->where('transaction_id', $transactionId)
             ->where('user_id', Auth::id())
-            ->first();
-        abort_if(is_null($transaction), 404, 'Transaction not found!');
-        return $transaction;
+            ->exists();
+        abort_if(!$transaction, 404, __('Transaction not found!'));
     }
 
     /**
@@ -117,9 +105,8 @@ class Transaction
         ]);
     }
 
-    private function updateTransactionFailure(string $transactionId): void
+    private function updateTransactionFailure(TransactionModel $transaction): void
     {
-        $transaction = $this->getTransactionById($transactionId);
         if ($transaction->status !== Status::SUCCESS) {
             $transaction->update(['status' => Status::FAILED]);
         }

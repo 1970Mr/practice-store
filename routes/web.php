@@ -4,7 +4,6 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\MembershipPlanController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TransactionController;
 use App\Services\Storage\Contracts\StorageInterface;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -15,10 +14,6 @@ Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products/checkout', [ProductController::class, 'checkout'])->name('products.checkout');
 Route::get('/products/callback', [ProductController::class, 'callback'])->name('products.callback');
-
-// Purchase
-Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
-Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
 
 // Transaction
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
@@ -39,5 +34,6 @@ Route::get('/cart/clear', static function (StorageInterface $storage) {
 })->name('cart.clear');
 
 // Order
-Route::post('/orders/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-Route::any('/orders/callback/{transaction:internal_code}', [OrderController::class, 'callback'])->name('orders.callback')->withoutMiddleware(VerifyCsrfToken::class);
+Route::post('/transactions/checkout', [OrderController::class, 'checkout'])->name('transactions.checkout');
+Route::any('/transactions/callback/{transaction:internal_code}', [OrderController::class, 'callback'])->name('transactions.callback')
+    ->withoutMiddleware(VerifyCsrfToken::class);
