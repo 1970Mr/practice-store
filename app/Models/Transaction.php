@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Transaction extends Model
 {
@@ -31,11 +31,8 @@ class Transaction extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function callbackPayload(): Attribute
+    public function callback(): HasOne
     {
-        return Attribute::make(
-            get: static fn ($value) => unserialize($value, ['allowed_classes' => true]),
-            set: static fn ($value) => serialize($value)
-        );
+        return $this->hasOne(TransactionCallback::class);
     }
 }

@@ -62,7 +62,7 @@ class TransactionController extends Controller
         try {
             // To verify that the transaction belongs to the user
             $this->transactionService->ensureTransactionBelongsToUser($transaction->transaction_id);
-            $transaction->update(['callback_payload' => $request->all()]);
+            $transaction->callback()->firstOrCreate(['callback_payload' => $request->all()]);
             $referenceId = $this->transactionService->verify($transaction);
 
             // Clear the cart items
