@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MembershipPlanController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -29,3 +30,6 @@ Route::get('/transactions', [TransactionController::class, 'index'])->name('tran
 Route::post('/transactions/checkout', [TransactionController::class, 'checkout'])->name('transactions.checkout');
 Route::any('/transactions/callback/{transaction:internal_code}', [TransactionController::class, 'callback'])->name('transactions.callback')
     ->withoutMiddleware(VerifyCsrfToken::class);
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');

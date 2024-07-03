@@ -2,6 +2,9 @@
     "Success!": "موفقیت!",
     "Error!": "خطا!",
     "Ok": "باشه",
+    "success": "موفقیت آمیز",
+    "failed": "ناموفق",
+    "pending": "در حال پردازش",
     "Payment successfully.": "پرداخت شما با موفقیت انجام شد.",
     "Payment failed!": "پرداخت شما با مشکل مواجه شد! لطفا مجددا تلاش کنید.",
     "Payment already done!": "عمليات پرداخت موفق بوده و قبلا عملیات اعتبارسنجی تراكنش انجام شده است.",
@@ -16,5 +19,6 @@
     "zarinpal": "زرین پال",
     "idpay": "IDPay",
     "Your order has been successfully placed.": "سفارش شما با موفقیت انجام شد.",
-    "Transaction not found!": "تراکنش پیدا نشد!"
+    "Transaction not found!": "تراکنش پیدا نشد!",
+    "Order not found!": "سفارش پیدا نشد!"
 }

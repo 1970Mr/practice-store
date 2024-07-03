@@ -6,6 +6,7 @@ use App\Enums\PaymentMethod;
 use App\Exceptions\VerifyRepeatedException;
 use App\Http\Requests\OrderRequest;
 use App\Models\Transaction;
+use App\Services\Cart\Cart;
 use App\Services\Order\Order as OrderService;
 use App\Services\Transaction\Transaction as TransactionService;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class TransactionController extends Controller
     public function __construct(
         private readonly OrderService $orderService,
         private readonly TransactionService $transactionService,
+        private readonly Cart $cartService,
     )
     {
     }
@@ -38,6 +40,8 @@ class TransactionController extends Controller
 
             // If the payment is not online
             if ($request->payment_method !== PaymentMethod::ONLINE->value) {
+                // Clear the cart items
+                $this->cartService->clear();
                 DB::commit();
                 return to_route('home')->with(['success' => __('Your order has been successfully placed.')]);
             }
@@ -60,6 +64,8 @@ class TransactionController extends Controller
             $this->transactionService->ensureTransactionBelongsToUser($transaction->transaction_id);
             $referenceId = $this->transactionService->verify($transaction);
 
+            // Clear the cart items
+            $this->cartService->clear();
             return $this->setView('success', __('Payment successfully.'), $referenceId);
         } catch (VerifyRepeatedException $e) {
             return $this->setView('success', __('Payment already done!'), $transaction->reference_id);

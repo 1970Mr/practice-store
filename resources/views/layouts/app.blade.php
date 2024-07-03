@@ -14,7 +14,7 @@
     </style>
     @stack('styles')
 </head>
-<body>
+<body class="pb-3">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('home') }}">فروشگاه آنلاین</a>
@@ -31,6 +31,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('membership-plans.index') }}">پلن‌های عضویت</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('orders.index') }}">سفارشات</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('cart.index') }}">

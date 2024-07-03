@@ -2,6 +2,7 @@
 
 namespace App\Services\Transaction;
 
+use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Exceptions\VerifyRepeatedException;
 use App\Models\Order;
@@ -53,6 +54,9 @@ class Transaction
      */
     public function createTransaction(Order $order, string $paymentMethod, ?string $gateway = null, ?int $amount = null): TransactionModel
     {
+        if ($paymentMethod !== PaymentMethod::ONLINE->value) {
+            $gateway = null;
+        }
         $amount = $amount ?? $order->amount;
         return TransactionModel::query()->create([
             'internal_code' => md5(uniqid('', true)),

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PaymentMethod;
-use App\Enums\Status;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -30,12 +28,4 @@ class Transaction extends Model
     {
         return $this->belongsTo(Order::class);
     }
-
-//    protected function casts(): array
-//    {
-//        return [
-//            'status' => Status::class,
-//            'payment_method' => PaymentMethod::class,
-//        ];
-//    }
 }
