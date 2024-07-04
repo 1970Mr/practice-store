@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCompleted;
+use App\Listeners\SendOrderDetails;
 use App\Services\Storage\Contracts\StorageInterface;
 use App\Services\Storage\Session\SessionStorage;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StorageInterface::class, static function () {
             return new SessionStorage('cart');
         });
+
+        Event::listen(OrderCompleted::class, SendOrderDetails::class);
     }
 }

@@ -20,7 +20,7 @@ class CartController extends Controller
 
     public function index(): View
     {
-        $cartItems = $this->cart->all();
+        $cartItems = $this->cart->all()->reverse();
         $cartSubtotal = $this->cart->subtotal();
         $transportationCosts = Order::TRANSPORTATION_COSTS;
         $cartTotal = $this->cart->total($transportationCosts);

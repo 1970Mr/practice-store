@@ -3,6 +3,7 @@
 namespace App\Services\Order;
 
 use App\Enums\OrderStatus;
+use App\Events\OrderCompleted;
 use App\Exceptions\QuantityExceededException;
 use App\Models\Order as OrderModel;
 use App\Services\Cart\Cart;
@@ -53,6 +54,7 @@ readonly class Order
         $this->cart->clear();
 
         $order->update(['status' => OrderStatus::COMPLETED->value]);
+        event(new OrderCompleted($order));
     }
 
     /**

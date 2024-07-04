@@ -10,7 +10,7 @@ class OrderController extends Controller
 {
     public function index(): View
     {
-        $orders = Auth::user()->orders()->with('products', 'transactions')->get();
+        $orders = Auth::user()->orders()->with('products', 'transactions')->latest()->get();
         return view('orders.index', compact('orders'));
     }
 

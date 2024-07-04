@@ -20,5 +20,6 @@
     "idpay": "IDPay",
     "Your order has been successfully placed.": "سفارش شما با موفقیت انجام شد.",
     "Transaction not found!": "تراکنش پیدا نشد!",
-    "Order not found!": "سفارش پیدا نشد!"
+    "Order not found!": "سفارش پیدا نشد!",
+    "Order Details": "جزئیات سفارش"
 }
