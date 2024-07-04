@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\MembershipPlanController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
@@ -11,9 +10,6 @@ use Illuminate\Support\Facades\Route;
 // Product
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-
-// Membership
-Route::get('/membership-plans', [MembershipPlanController::class, 'index'])->name('membership-plans.index');
 
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
