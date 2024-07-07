@@ -16,17 +16,24 @@
                         </li>
                     @endforeach
                 </ul>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>مبلغ کل: {{ number_format($order->amount) }} تومان</strong>
-                    </div>
-                    <div>
-                        <strong>هزینه حمل: {{ number_format(App\Models\Order::TRANSPORTATION_COSTS) }} تومان</strong>
-                    </div>
-                    <div>
-                        <strong>مبلغ قابل پرداخت: {{ number_format($order->amount + App\Models\Order::TRANSPORTATION_COSTS) }} تومان</strong>
-                    </div>
-                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">جزئیات هزینه‌ها</h5>
+                <ul>
+                    @foreach($order->cost->summary as $description => $costValue)
+                        <li>
+                            <strong>@lang($description): </strong>
+                            <span>{{ number_format($costValue) }} تومان</span>
+                        </li>
+                    @endforeach
+                    <li>
+                        <strong>مبلغ قابل پرداخت: </strong>
+                        <span>{{ number_format($order->cost->total_cost) }} تومان</span>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -44,6 +51,9 @@
                         <strong>وضعیت: </strong>{{ __($transaction->status) }}<br>
                         <strong>تاریخ ایجاد: </strong>{{ $transaction->created_at->format('Y-m-d H:i') }}<br>
                     </div>
+                    @if(!$loop->last)
+                        <hr>
+                    @endif
                 @endforeach
             </div>
         </div>

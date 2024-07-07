@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Cost\Contracts\CostInterface;
 use App\Enums\PaymentGateway;
 use App\Enums\PaymentMethod;
 use App\Exceptions\QuantityExceededException;
 use App\Http\Requests\CartRequest;
-use App\Models\Order;
 use App\Models\Product;
 use App\Services\Cart\Cart;
 use Illuminate\Http\RedirectResponse;
@@ -14,19 +14,20 @@ use Illuminate\View\View;
 
 class CartController extends Controller
 {
-    public function __construct(private readonly Cart $cart)
+    public function __construct(
+        private readonly Cart $cart,
+        private readonly CostInterface $cost
+    )
     {
     }
 
     public function index(): View
     {
         $cartItems = $this->cart->all()->reverse();
-        $cartSubtotal = $this->cart->subtotal();
-        $transportationCosts = Order::TRANSPORTATION_COSTS;
-        $cartTotal = $this->cart->total($transportationCosts);
         $paymentMethods = PaymentMethod::values();
         $paymentGateways = PaymentGateway::values();
-        return view('cart.index', compact(['cartItems', 'cartSubtotal', 'cartTotal', 'transportationCosts', 'paymentMethods', 'paymentGateways']));
+        return view('cart.index',
+            compact(['cartItems', 'paymentMethods', 'paymentGateways']) + ['cost' => $this->cost]);
     }
 
     public function add(Product $product): RedirectResponse

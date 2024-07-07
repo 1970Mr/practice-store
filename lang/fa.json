@@ -21,5 +21,7 @@
     "Your order has been successfully placed.": "سفارش شما با موفقیت انجام شد.",
     "Transaction not found!": "تراکنش پیدا نشد!",
     "Order not found!": "سفارش پیدا نشد!",
-    "Order Details": "جزئیات سفارش"
+    "Order Details": "جزئیات سفارش",
+    "Total Amount": "مبلغ کل",
+    "Shipping Cost": "هزینه حمل و نقل"
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Cost\Contracts\CostInterface;
 use App\Enums\PaymentMethod;
 use App\Exceptions\VerifyRepeatedException;
 use App\Http\Requests\TransactionRequest;
@@ -21,6 +22,7 @@ class TransactionController extends Controller
     public function __construct(
         private readonly OrderService $orderService,
         private readonly TransactionService $transactionService,
+        private readonly CostInterface $cost,
     )
     {
     }
@@ -34,6 +36,7 @@ class TransactionController extends Controller
                 $order,
                 $request->get('payment_method'),
                 $request->get('payment_gateway'),
+                $this->cost->calculateTotalCost()
             );
 
             // If the payment is not online
@@ -43,7 +46,7 @@ class TransactionController extends Controller
                 return to_route('home')->with(['success' => __('Your order has been successfully placed.')]);
             }
 
-            $invoice = (new Invoice())->amount($order->amount);
+            $invoice = (new Invoice())->amount($this->cost->calculateTotalCost());
             $callbackUrl = route('transactions.callback', $transaction->internal_code);
 
             DB::commit();

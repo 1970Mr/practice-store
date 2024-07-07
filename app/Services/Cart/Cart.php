@@ -64,11 +64,6 @@ readonly class Cart
         return $total;
     }
 
-    public function total($additionalAmount): int
-    {
-        return $this->subtotal() + $additionalAmount;
-    }
-
     public function itemCount(): int
     {
         return $this->storage->count();

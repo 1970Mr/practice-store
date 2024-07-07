@@ -2,23 +2,28 @@
 
 namespace App\Services\Order;
 
+use App\Domain\Cost\Contracts\CostInterface;
 use App\Enums\OrderStatus;
 use App\Events\OrderCompleted;
 use App\Exceptions\QuantityExceededException;
+use App\Models\Cost;
 use App\Models\Order as OrderModel;
 use App\Services\Cart\Cart;
 use Illuminate\Support\Facades\Auth;
 
 readonly class Order
 {
-    public function __construct(private Cart $cart)
+    public function __construct(
+        private Cart $cart,
+        private CostInterface $cost,
+    )
     {
     }
 
     public function makeOrder(): OrderModel
     {
         $order = OrderModel::query()->create([
-            'amount' => $this->cart->total(OrderModel::TRANSPORTATION_COSTS),
+            'amount' => $this->cart->subtotal(),
             'status' => OrderStatus::PENDING->value,
             'user_id' => Auth::id(),
         ]);
@@ -50,6 +55,9 @@ readonly class Order
         // Reduce the quantity of products
         $this->normalizeQuantity($order);
 
+        // Create a cost summary
+        $this->createCostSummary($order);
+
         // Clear the cart items
         $this->cart->clear();
 
@@ -68,5 +76,14 @@ readonly class Order
             }
             $product->decrement('stock', $product->pivot->quantity);
         }
+    }
+
+    public function createCostSummary(OrderModel $order): void
+    {
+        Cost::query()->create([
+            'total_cost' => $this->cost->calculateTotalCost(),
+            'summary' => $this->cost->getCostSummary(),
+            'order_id' => $order->id,
+        ]);
     }
 }

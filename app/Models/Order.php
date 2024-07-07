@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -15,7 +16,7 @@ class Order extends Model
         'user_id',
     ];
 
-    public const TRANSPORTATION_COSTS = 10000;
+    public const SHIPPING_COSTS = 20000;
 
     public function products(): BelongsToMany
     {
@@ -30,5 +31,10 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function cost(): HasOne
+    {
+        return $this->hasOne(Cost::class);
     }
 }

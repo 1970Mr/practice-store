@@ -54,17 +54,15 @@
                         <div class="card-body">
                             <h5 class="card-title mb-3">خلاصه سفارش</h5>
                             <ul class="list-group mb-3 p-0">
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>مبلغ کل</span>
-                                    <strong>{{ number_format($cartSubtotal) }} تومان</strong>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>هزینه حمل</span>
-                                    <strong>{{ number_format($transportationCosts) }} تومان</strong>
-                                </li>
+                                @foreach($cost->getCostsummary() as $description => $costValue)
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>@lang($description)</span>
+                                        <strong>{{ number_format($costValue) }} تومان</strong>
+                                    </li>
+                                @endforeach
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>مبلغ قابل پرداخت</span>
-                                    <strong>{{ number_format($cartTotal) }} تومان</strong>
+                                    <strong>{{ number_format($cost->calculateTotalCost()) }} تومان</strong>
                                 </li>
                             </ul>
                             <form action="{{ route('transactions.checkout') }}" method="POST">

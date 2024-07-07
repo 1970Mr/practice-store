@@ -29,24 +29,17 @@
                                             @endforeach
                                         </ul>
                                     </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-5">
                                     <div>
                                         <strong>مبلغ کل: {{ number_format($order->amount) }} تومان</strong>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between mt-3">
                                     <div>
-                                        <strong>هزینه حمل: {{ number_format(App\Models\Order::TRANSPORTATION_COSTS) }} تومان</strong>
-                                    </div>
-                                    <div>
-                                        <strong>مبلغ قابل پرداخت: {{ number_format($order->amount + App\Models\Order::TRANSPORTATION_COSTS) }} تومان</strong>
+                                        <strong>مبلغ قابل پرداخت: {{ number_format($order->transactions->last()?->amount) }} تومان</strong>
                                     </div>
                                 </div>
                                 <div class="mt-3">
-                                        @foreach ($order->transactions as $transaction)
-                                        <div>
-                                            <strong>وضعیت پرداخت:</strong> {{ __($transaction->status) }}<br>
-                                        </div>
-                                    @endforeach
+                                    <strong>وضعیت پرداخت:</strong> {{ __($order->transactions->last()?->status) }}<br>
                                 </div>
                                 <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary mt-3">جزئیات سفارش</a>
                             </div>
