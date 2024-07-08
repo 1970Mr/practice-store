@@ -24,6 +24,7 @@
     "Order Details": "جزئیات سفارش",
     "Total Amount": "مبلغ کل",
     "Shipping Cost": "هزینه حمل و نقل",
+    "Discount Cost": "مقدار تخفیف",
     "The discount code is invalid!": "کد تخفیف نامعتبر است!",
     "Discount code applied.": "کد تخفیف اعمال شد.",
     "The discount code has been removed!": "کد تخفیف حذف شد!"

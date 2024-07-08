@@ -16,8 +16,17 @@
             </ul>
             @if(session('coupon'))
                 <div class="alert alert-success">
-                    {{--                                    کد تخفیف "{{ session('coupon')['code'] }}" اعمال شد. مبلغ تخفیف: {{ number_format(session('coupon')['discount']) }} تومان--}}
                     <p>کد تخفیف "{{ session('coupon.code') }}" اعمال شد.</p>
+{{--                    <ul class="small">--}}
+{{--                        <li>--}}
+{{--                            <span>میزان تخفیف: </span>--}}
+{{--                            <span>{{ session('coupon.percent') }} درصد</span>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <span>حداکثر مقدار تخفیف: </span>--}}
+{{--                            <span>{{ number_format(session('coupon.limit')) }} تومان</span>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
                     <form action="{{ route('coupon.remove') }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-outline-danger">حذف کد تخفیف</button>

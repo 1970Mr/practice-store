@@ -58,6 +58,9 @@ readonly class Order
         // Create a cost summary
         $this->createCostSummary($order);
 
+        // Remove coupon code
+        session()->forget('coupon');
+
         // Clear the cart items
         $this->cart->clear();
 
