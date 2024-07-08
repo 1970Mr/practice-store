@@ -17,7 +17,15 @@
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">افزودن به سبد</button>
                                 </form>
                             </div>
-                            <small class="text-muted">{{ number_format($product->price) }} تومان</small>
+                            @if ($product->hasCoupon())
+                                <small class="text-muted">
+                                    <span style="text-decoration: line-through;">{{ number_format($product->price) }} تومان</span>
+                                    <br>
+                                    <span>{{ number_format($product->discountedPrice()) }} تومان</span>
+                                </small>
+                            @else
+                                <small class="text-muted">{{ number_format($product->price) }} تومان</small>
+                            @endif
                         </div>
                     </div>
                 </div>

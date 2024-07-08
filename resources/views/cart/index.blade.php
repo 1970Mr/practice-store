@@ -38,9 +38,17 @@
                                             </form>
                                         </div>
                                         <div class="d-flex justify-content-between">
-                                            <small class="text-muted">مبلغ محصول: {{ number_format($item->price) }} تومان</small>
+                                            @if ($item->hasCoupon())
+                                                <small class="text-muted">
+                                                    <span style="text-decoration: line-through;">{{ number_format($item->price) }} تومان</span>
+                                                    <br>
+                                                    <span>{{ number_format($item->discountedPrice()) }} تومان</span>
+                                                </small>
+                                            @else
+                                                <small class="text-muted">{{ number_format($item->price) }} تومان</small>
+                                            @endif
                                             @if($item->quantity > 1)
-                                                <small class="text-muted">مبلغ {{ $item->quantity }} محصول: {{ number_format($item->price * $item->quantity) }} تومان</small>
+                                                <small class="text-muted">مبلغ {{ $item->quantity }} محصول: {{ number_format($item->discountedPrice() * $item->quantity) }} تومان</small>
                                             @endif
                                         </div>
                                     </div>

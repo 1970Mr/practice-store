@@ -59,7 +59,7 @@ readonly class Cart
     {
         $total = 0;
         foreach ($this->all() as $item) {
-            $total += $item->price * $item->quantity;
+            $total += $item->discountedPrice() * $item->quantity;
         }
         return $total;
     }
