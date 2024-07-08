@@ -12,7 +12,7 @@ class CouponValidationHandler
     /**
      * @throws InvalidCouponException
      */
-    public function __invoke(Coupon $coupon): bool
+    public function validated(Coupon $coupon): bool
     {
         $isValidExpiration = resolve(IsValidExpiration::class);
         $canUseIt = resolve(CanUseIt::class);
