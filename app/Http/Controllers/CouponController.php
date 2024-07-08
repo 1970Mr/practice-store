@@ -18,9 +18,9 @@ class CouponController extends Controller
     {
         try {
             /** @var Coupon $coupon */
-            $coupon = Coupon::query()->findOrFail($request->coupon_code, 'code');
-            $this->couponValidationHandler->validated($coupon);
-            session()->put('coupon_code', $coupon->code);
+            $coupon = Coupon::query()->where('code', $request->coupon_code)->firstOrFail();
+            $this->couponValidationHandler->validate($coupon);
+            session()->put('coupon.code', $coupon->code);
 
             return back()->with('success', __('Discount code applied.'));
         } catch (Exception $e) {
@@ -30,7 +30,7 @@ class CouponController extends Controller
 
     public function removeCoupon(): RedirectResponse
     {
-        session()->forget('coupon_code');
+        session()->forget('coupon');
         return back()->with('success', __('The discount code has been removed!'));
     }
 }
