@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\User;
 
@@ -12,11 +13,23 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@gmail.com',
         ]);
+        Coupon::factory(5)->create([
+            'couponable_id' => $user->id,
+            'couponable_type' => User::class,
+        ]);
 
-        Product::factory(50)->create();
+        $products = Product::factory(50)->create();
+        foreach ($products as $product) {
+            if (fake()->boolean(30)) {
+                Coupon::factory()->create([
+                    'couponable_id' => $product->id,
+                    'couponable_type' => Product::class,
+                ]);
+            }
+        }
     }
 }
