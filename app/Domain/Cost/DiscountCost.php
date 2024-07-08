@@ -18,10 +18,8 @@ readonly class DiscountCost implements CostInterface
     public function calculateCost(): int
     {
         $cost = 0;
-        $couponCode = session('coupon.code');
-        if ($couponCode) {
-            /** @var Coupon $coupon */
-            $coupon = Coupon::query()->where('code', $couponCode)->first();
+        $coupon = session('coupon');
+        if ($coupon) {
             $cost = $this->discountCalculator->discountAmount($coupon, $this->cost->calculateTotalCost());
         }
         return $cost;

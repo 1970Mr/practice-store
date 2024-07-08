@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->tinyInteger('percent');
-            $table->integer('amount_limit');
+            $table->integer('amount_limit')->nullable()->comment('If it was null, it means no limit');
             $table->integer('usage_limit')->nullable()->comment('If it was null, it means no limit');
             $table->integer('used_count')->default(0);
             $table->timestamp('expire_time');

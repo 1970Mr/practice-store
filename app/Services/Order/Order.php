@@ -7,9 +7,9 @@ use App\Enums\OrderStatus;
 use App\Events\OrderCompleted;
 use App\Exceptions\QuantityExceededException;
 use App\Models\Cost;
-use App\Models\Coupon;
 use App\Models\Order as OrderModel;
 use App\Services\Cart\Cart;
+use App\Services\Coupon\Coupon;
 use Illuminate\Support\Facades\Auth;
 
 readonly class Order
@@ -17,6 +17,7 @@ readonly class Order
     public function __construct(
         private Cart $cart,
         private CostInterface $cost,
+        private Coupon $couponService,
     )
     {
     }
@@ -54,16 +55,13 @@ readonly class Order
         }
 
         // Reduce the quantity of products
-        $this->normalizeQuantity($order);
+        $this->normalizeProductsQuantity($order);
 
         // Create a cost summary
         $this->createCostSummary($order);
 
-        if (session('coupon.code')) {
-            $coupon = Coupon::query()->where('code', session('coupon.code'))->firstOrFail();
-            $coupon->increment('used_count');
-            session()->forget('coupon');
-        }
+        // Increment the count_used and remove the coupon session
+        $this->couponService->couponUsed();
 
         // Clear the cart items
         $this->cart->clear();
@@ -75,7 +73,7 @@ readonly class Order
     /**
      * @throws QuantityExceededException
      */
-    private function normalizeQuantity(OrderModel $order): void
+    private function normalizeProductsQuantity(OrderModel $order): void
     {
         foreach ($order->products as $product) {
             if ($product->stock < 0) {

@@ -30,5 +30,5 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
 // Coupon
-Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('coupon.apply')->middleware('auth');
-Route::post('/remove-coupon', [CouponController::class, 'removeCoupon'])->name('coupon.remove')->middleware('auth');
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('coupon.apply');
+Route::post('/remove-coupon', [CouponController::class, 'removeCoupon'])->name('coupon.remove');

@@ -6,7 +6,7 @@ use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
 
-class CanUseIt extends BaseCouponValidator
+class BelongsToUser extends BaseCouponValidator
 {
     /**
      * @throws InvalidCouponException
