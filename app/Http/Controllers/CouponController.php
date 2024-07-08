@@ -23,7 +23,7 @@ class CouponController extends Controller
             session()->put('coupon', [
                 'code' => $coupon->code,
                 'percent' => $coupon->percent,
-                'limit' => $coupon->limit,
+                'amount_limit' => $coupon->amount_limit,
             ]);
 
             return back()->with('success', __('Discount code applied.'));

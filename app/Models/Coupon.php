@@ -13,7 +13,9 @@ class Coupon extends Model
     protected $fillable = [
         'code',
         'percent',
-        'limit',
+        'amount_limit',
+        'usage_limit',
+        'used_count',
         'expire_time',
         'couponable_id',
         'couponable_type',
@@ -34,5 +36,12 @@ class Coupon extends Model
     public function isExpired(): bool
     {
         return now()->isAfter($this->expire_time);
+    }
+
+    public function exceededUsageLimit(): bool
+    {
+        $hasUsageLimit = $this->usage_limit !== null;
+        $exceeded = $this->used_count >= $this->usage_limit;
+        return $hasUsageLimit && $exceeded;
     }
 }

@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@gmail.com',
         ]);
         Coupon::factory(5)->create([
+            'usage_limit' => fake()->numberBetween(1, 5),
+            'used_count' => 0,
             'couponable_id' => $user->id,
             'couponable_type' => User::class,
         ]);

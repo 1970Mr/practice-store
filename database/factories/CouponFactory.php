@@ -19,9 +19,11 @@ class CouponFactory extends Factory
     {
         return [
             'code' => Str::upper(Str::random(10)),
-            'percent' => $this->faker->numberBetween(5, 50),
-            'limit' => $this->faker->numberBetween(1000, 10000),
-            'expire_time' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'percent' => fake()->numberBetween(5, 50),
+            'amount_limit' => fake()->numberBetween(1000, 10000),
+            'expire_time' => fake()->dateTimeBetween('now', '+1 year'),
+            'usage_limit' => null,
+            'used_count' => 0,
             'couponable_id' => null,
             'couponable_type' => null,
         ];

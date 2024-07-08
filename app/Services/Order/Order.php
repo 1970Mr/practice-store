@@ -7,6 +7,7 @@ use App\Enums\OrderStatus;
 use App\Events\OrderCompleted;
 use App\Exceptions\QuantityExceededException;
 use App\Models\Cost;
+use App\Models\Coupon;
 use App\Models\Order as OrderModel;
 use App\Services\Cart\Cart;
 use Illuminate\Support\Facades\Auth;
@@ -58,8 +59,11 @@ readonly class Order
         // Create a cost summary
         $this->createCostSummary($order);
 
-        // Remove coupon code
-        session()->forget('coupon');
+        if (session('coupon.code')) {
+            $coupon = Coupon::query()->where('code', session('coupon.code'))->firstOrFail();
+            $coupon->increment('used_count');
+            session()->forget('coupon');
+        }
 
         // Clear the cart items
         $this->cart->clear();
