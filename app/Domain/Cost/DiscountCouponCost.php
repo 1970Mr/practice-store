@@ -6,7 +6,7 @@ use App\Domain\Cost\Contracts\CostInterface;
 use App\Models\Coupon;
 use App\Services\Discount\DiscountCalculator;
 
-readonly class DiscountCost implements CostInterface
+readonly class DiscountCouponCost implements CostInterface
 {
     public function __construct(
          private CostInterface $cost,
@@ -32,7 +32,7 @@ readonly class DiscountCost implements CostInterface
 
     public function getDescription(): string
     {
-        return "Discount Cost";
+        return "Discount Coupon Cost";
     }
 
     public function getCostSummary(): array
