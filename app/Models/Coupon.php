@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Enums\CouponType;
+use App\Traits\HasValidTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Coupon extends Model
 {
-    use HasFactory;
+    use HasFactory, HasValidTime;
 
     protected $fillable = [
         'code',
@@ -31,16 +32,6 @@ class Coupon extends Model
             'start_time' => 'datetime',
             'end_time' => 'datetime',
         ];
-    }
-
-    public function hasValidTime(): bool
-    {
-        return now()->isAfter($this->start_time) && now()->isBefore($this->end_time);
-    }
-
-    public function scopeValidTime(Builder $query): Builder
-    {
-        return $query->where('start_time', '<=', now())->where('end_time', '>=', now());
     }
 
     public function exceededUsageLimit(): bool

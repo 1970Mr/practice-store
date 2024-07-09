@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\Discount\DiscountCalculator;
+use App\Services\Discount\Common\CommonDiscountCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -34,15 +34,21 @@ class Product extends Model
         if (!$this->hasDiscount()) {
             return $this->price;
         }
-        $discountCalculator = new DiscountCalculator();
-        /** @var Coupon $coupon */
-        $coupon = $this->validCoupons()->first();
-        return $discountCalculator->discountedPrice($coupon, $this->price);
+
+        $commonDiscount = CommonDiscount::query()
+            ->where('minimum_amount', '<=', $this->price)
+            ->validTime()
+            ->latest()
+            ->first();
+        return (new CommonDiscountCalculator())->discountedPrice($commonDiscount, $this->price);
     }
 
     public function hasDiscount(): bool
     {
-        return false;
-//        return $this->validCoupons()->count() > 0;
+        return CommonDiscount::query()
+            ->where('minimum_amount', '<=', $this->price)
+            ->validTime()
+            ->latest()
+            ->exists();
     }
 }

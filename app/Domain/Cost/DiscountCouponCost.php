@@ -4,7 +4,7 @@ namespace App\Domain\Cost;
 
 use App\Domain\Cost\Contracts\CostInterface;
 use App\Domain\Cost\Traits\CostTrait;
-use App\Services\Discount\DiscountCouponCalculator;
+use App\Services\Discount\Coupon\DiscountCouponCalculator;
 
 readonly class DiscountCouponCost implements CostInterface
 {

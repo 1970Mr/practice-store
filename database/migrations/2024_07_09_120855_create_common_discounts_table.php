@@ -17,10 +17,8 @@ return new class extends Migration
             $table->tinyInteger('percent');
             $table->integer('minimum_amount')->nullable()->comment('If it was null, it means no limit');
             $table->integer('discount_ceiling')->nullable()->comment('If it was null, it means no limit');
-            $table->integer('usage_limit')->nullable()->comment('If it was null, it means no limit');
-            $table->integer('used_count')->default(0);
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
             $table->timestamps();
         });
     }
