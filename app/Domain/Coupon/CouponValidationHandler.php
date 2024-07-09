@@ -4,7 +4,7 @@ namespace App\Domain\Coupon;
 
 use App\Domain\Coupon\Validator\BelongsToUser;
 use App\Domain\Coupon\Validator\HasUsageLimit;
-use App\Domain\Coupon\Validator\IsValidExpiration;
+use App\Domain\Coupon\Validator\HasValidTime;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 
@@ -15,7 +15,11 @@ class CouponValidationHandler
      */
     public function validate(Coupon $coupon): bool
     {
-        $isValidExpiration = resolve(IsValidExpiration::class);
+        if (session('coupon')) {
+            throw new InvalidCouponException();
+        }
+
+        $isValidExpiration = resolve(HasValidTime::class);
         $canUseIt = resolve(BelongsToUser::class);
         $hasUsageLimit = resolve(HasUsageLimit::class);
 

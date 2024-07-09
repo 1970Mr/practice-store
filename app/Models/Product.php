@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Domain\Coupon\Trait\HasCoupon;
 use App\Services\Discount\DiscountCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    use HasFactory, HasCoupon;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -32,7 +31,7 @@ class Product extends Model
 
     public function discountedPrice(): int
     {
-        if (!$this->hasCoupon()) {
+        if (!$this->hasDiscount()) {
             return $this->price;
         }
         $discountCalculator = new DiscountCalculator();
@@ -41,8 +40,9 @@ class Product extends Model
         return $discountCalculator->discountedPrice($coupon, $this->price);
     }
 
-    public function hasCoupon(): bool
+    public function hasDiscount(): bool
     {
-        return $this->validCoupons()->count() > 0;
+        return false;
+//        return $this->validCoupons()->count() > 0;
     }
 }

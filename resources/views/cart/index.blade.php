@@ -38,7 +38,7 @@
                                             </form>
                                         </div>
                                         <div class="d-flex justify-content-between">
-                                            @if ($item->hasCoupon())
+                                            @if ($item->hasDiscount())
                                                 <small class="text-muted">
                                                     <span style="text-decoration: line-through;">{{ number_format($item->price) }} تومان</span>
                                                     <br>

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\CouponType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class Coupon extends Model
 {
@@ -26,21 +27,18 @@ class Coupon extends Model
     protected function casts(): array
     {
         return [
-            'expire_time' => 'datetime'
+            'amount_type' => CouponType::class,
+            'start_time' => 'datetime',
+            'end_time' => 'datetime',
         ];
     }
 
-    public function couponable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function isValid(): bool
+    public function hasValidTime(): bool
     {
         return now()->isAfter($this->start_time) && now()->isBefore($this->end_time);
     }
 
-    public function scopeValid($query)
+    public function scopeValidTime(Builder $query): Builder
     {
         return $query->where('start_time', '<=', now())->where('end_time', '>=', now());
     }
@@ -50,5 +48,20 @@ class Coupon extends Model
         $hasUsageLimit = $this->usage_limit !== null;
         $exceeded = $this->used_count >= $this->usage_limit;
         return $hasUsageLimit && $exceeded;
+    }
+
+    public function scopeNotExceededUsageLimit(Builder $query): Builder
+    {
+        return $query->whereNull('usage_limit')->OrWhereColumn('used_count', '<', 'usage_limit');
+    }
+
+    public function scopeGreaterThanMinimumAmount(Builder $query, int $amount): Builder
+    {
+        return $query->where('minimum_amount', '<=', $amount);
+    }
+
+    public function isGreaterThanMinimumAmount(int $amount): bool
+    {
+        return $this->minimum_amount <= $amount;
     }
 }

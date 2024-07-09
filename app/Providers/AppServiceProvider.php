@@ -11,6 +11,7 @@ use App\Events\OrderCompleted;
 use App\Listeners\SendOrderDetails;
 use App\Services\Cart\Cart;
 use App\Services\Discount\DiscountCalculator;
+use App\Services\Discount\DiscountCouponCalculator;
 use App\Services\Storage\Contracts\StorageInterface;
 use App\Services\Storage\Session\SessionStorage;
 use Illuminate\Support\Facades\Event;
@@ -38,8 +39,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CostInterface::class, static function () {
             $cartCost = new CartCost(resolve(Cart::class));
             $shippingCost =  new ShippingCost($cartCost);
-            $discountCouponCost = new DiscountCouponCost($shippingCost, resolve(DiscountCalculator::class));
-            return  new DiscountProductsCost($discountCouponCost, resolve(Cart::class));
+            $discountCouponCost = new DiscountCouponCost($shippingCost, resolve(DiscountCouponCalculator::class));
+//            return  new DiscountProductsCost($discountCouponCost, resolve(Cart::class));
+            return $discountCouponCost;
         });
 
         Event::listen(OrderCompleted::class, SendOrderDetails::class);

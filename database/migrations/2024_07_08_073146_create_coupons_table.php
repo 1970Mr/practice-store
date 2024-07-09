@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CouponType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->integer('amount');
-            $table->tinyInteger('amount_type')->comment('0: percent, 1: fixed amount');
+            $table->enum('amount_type', CouponType::values());
             $table->integer('minimum_amount')->nullable()->comment('If it was null, it means no limit');
             $table->integer('discount_ceiling')->nullable()->comment('If it was null, it means no limit');
             $table->integer('usage_limit')->nullable()->comment('If it was null, it means no limit');

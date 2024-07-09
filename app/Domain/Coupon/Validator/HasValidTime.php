@@ -5,14 +5,14 @@ namespace App\Domain\Coupon\Validator;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 
-class IsValidExpiration extends BaseCouponValidator
+class HasValidTime extends BaseCouponValidator
 {
     /**
      * @throws InvalidCouponException
      */
     public function validate(Coupon $coupon): bool
     {
-        if ($coupon->isExpired()) {
+        if (!$coupon->hasValidTime()) {
             throw new InvalidCouponException();
         }
 

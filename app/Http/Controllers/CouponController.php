@@ -24,6 +24,7 @@ class CouponController extends Controller
 
             return back()->with('success', __('Discount code applied.'));
         } catch (Exception $e) {
+            dd($e);
             return back()->with('error', __('The discount code is invalid!'));
         }
     }

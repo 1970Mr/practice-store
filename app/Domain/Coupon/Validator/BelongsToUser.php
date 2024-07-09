@@ -13,7 +13,8 @@ class BelongsToUser extends BaseCouponValidator
      */
     public function validate(Coupon $coupon): bool
     {
-        if (!Auth::user()->validCoupons()->where('id', $coupon->id)->exists()) {
+        $userHasCoupon = Auth::user()->validCoupons()->where('id', $coupon->id)->exists();
+        if ($coupon->user_id !== null && !$userHasCoupon) {
             throw new InvalidCouponException();
         }
 
