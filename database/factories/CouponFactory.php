@@ -35,7 +35,7 @@ class CouponFactory extends Factory
             'used_count' => 0,
             'start_time' => fake()->dateTimeBetween('-1 week', '+1 week'),
             'end_time' => fake()->dateTimeBetween('+1 week', '+1 month'),
-            'user_id' => User::factory()->create(),
+            'user_id' => User::factory(),
         ];
     }
 }

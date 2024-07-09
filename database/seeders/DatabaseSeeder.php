@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\AmazingSale;
+use App\Models\CommonDiscount;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\User;
@@ -17,18 +19,19 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@gmail.com',
         ]);
+
         Coupon::factory(3)->create(['user_id' => $user]);
         Coupon::factory(10)->create();
 
-
         $products = Product::factory(50)->create();
-//        foreach ($products as $product) {
-//            if (fake()->boolean(30)) {
-//                Coupon::factory()->create([
-//                    'couponable_id' => $product->id,
-//                    'couponable_type' => Product::class,
-//                ]);
-//            }
-//        }
+        foreach ($products as $product) {
+            if (fake()->boolean(30)) {
+                AmazingSale::factory()->create([
+                    'product_id' => $product,
+                ]);
+            }
+        }
+
+        CommonDiscount::factory(10)->create();
     }
 }
