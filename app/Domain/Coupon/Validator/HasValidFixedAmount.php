@@ -7,7 +7,7 @@ use App\Enums\CouponType;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 
-class HasValidAmount extends BaseCouponValidator
+class HasValidFixedAmount extends BaseCouponValidator
 {
     public function __construct(readonly private CostInterface $cost)
     {

@@ -2,17 +2,18 @@
 
 namespace App\Domain\Coupon\Validator;
 
+use App\Enums\CouponType;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 
-class HasUsageLimit extends BaseCouponValidator
+class IsCouponInSession extends BaseCouponValidator
 {
     /**
      * @throws InvalidCouponException
      */
     public function validate(Coupon $coupon): bool
     {
-        if ($coupon->exceededUsageLimit()) {
+        if (session('coupon')) {
             throw new InvalidCouponException();
         }
 

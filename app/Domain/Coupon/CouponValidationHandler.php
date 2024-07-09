@@ -3,10 +3,11 @@
 namespace App\Domain\Coupon;
 
 use App\Domain\Coupon\Validator\BelongsToUser;
-use App\Domain\Coupon\Validator\HasUsageLimit;
-use App\Domain\Coupon\Validator\HasValidAmount;
+use App\Domain\Coupon\Validator\HasNotExceededUsageLimit;
+use App\Domain\Coupon\Validator\HasValidFixedAmount;
 use App\Domain\Coupon\Validator\HasValidMinimumAmount;
 use App\Domain\Coupon\Validator\HasValidTime;
+use App\Domain\Coupon\Validator\IsCouponInSession;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 
@@ -17,21 +18,19 @@ class CouponValidationHandler
      */
     public function validate(Coupon $coupon): bool
     {
-        if (session('coupon')) {
-            throw new InvalidCouponException();
-        }
-
-        $isValidExpiration = resolve(HasValidTime::class);
-        $canUseIt = resolve(BelongsToUser::class);
-        $hasUsageLimit = resolve(HasUsageLimit::class);
-        $hasValidAmount = resolve(HasValidAmount::class);
+        $isCouponInSession = resolve(IsCouponInSession::class);
+        $hasValidTime = resolve(HasValidTime::class);
+        $belongsToUser = resolve(BelongsToUser::class);
+        $hasNotExceededUsageLimit = resolve(HasNotExceededUsageLimit::class);
+        $hasValidFixedAmount = resolve(HasValidFixedAmount::class);
         $hasValidMinimumAmount = resolve(HasValidMinimumAmount::class);
 
-        $isValidExpiration->setNextValidator($canUseIt);
-        $canUseIt->setNextValidator($hasUsageLimit);
-        $hasUsageLimit->setNextValidator($hasValidAmount);
-        $hasValidAmount->setNextValidator($hasValidMinimumAmount);
+        $isCouponInSession->setNextValidator($hasValidTime);
+        $hasValidTime->setNextValidator($belongsToUser);
+        $belongsToUser->setNextValidator($hasNotExceededUsageLimit);
+        $hasNotExceededUsageLimit->setNextValidator($hasValidFixedAmount);
+        $hasValidFixedAmount->setNextValidator($hasValidMinimumAmount);
 
-        return $isValidExpiration->validate($coupon);
+        return $isCouponInSession->validate($coupon);
     }
 }
