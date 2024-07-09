@@ -10,10 +10,7 @@ readonly class DiscountCouponCost implements CostInterface
 {
     use CostTrait;
 
-    public function __construct(
-        private CostInterface $cost,
-        private DiscountCouponCalculator $discountCouponCalculator
-    )
+    public function __construct(private CostInterface $cost)
     {
     }
 
@@ -22,7 +19,8 @@ readonly class DiscountCouponCost implements CostInterface
         $cost = 0;
         $coupon = session('coupon');
         if ($coupon) {
-            $cost = $this->discountCouponCalculator->discountAmount($coupon, $this->cost->calculateTotalCost());
+            $discountCouponCalculator = new DiscountCouponCalculator($coupon);
+            $cost = $discountCouponCalculator->discountAmount($this->cost->calculateTotalCost());
         }
         return $cost;
     }

@@ -26,6 +26,4 @@ class CommonDiscount extends Model
             'end_time' => 'datetime',
         ];
     }
-
-
 }

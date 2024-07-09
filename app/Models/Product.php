@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\Discount\Common\CommonDiscountCalculator;
+use App\Services\Discount\CommonDiscount\CommonDiscountCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,7 +40,7 @@ class Product extends Model
             ->validTime()
             ->latest()
             ->first();
-        return (new CommonDiscountCalculator())->discountedPrice($commonDiscount, $this->price);
+        return (new CommonDiscountCalculator($commonDiscount))->discountedPrice($this->price);
     }
 
     public function hasDiscount(): bool

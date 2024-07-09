@@ -21,7 +21,7 @@ readonly class DiscountProductsCost implements CostInterface
     {
         $discountedAmount = 0;
         foreach ($this->cart->all() as $product) {
-            if ($product->hasCoupon()) {
+            if ($product->hasDiscount()) {
                 $discountedAmount += $product->price - $product->discountedPrice();
             }
         }

@@ -4,20 +4,25 @@ namespace App\Services\Discount\Coupon;
 
 use App\Enums\CouponType;
 use App\Models\Coupon;
+use App\Services\Discount\Contracts\AbstractDiscountCalculator;
 
-class DiscountCouponCalculator
+readonly class DiscountCouponCalculator Extends AbstractDiscountCalculator
 {
-    public function discountAmount(Coupon $coupon, int $amount): int
+    public function __construct(private Coupon $discount)
     {
-        if ($coupon->amount_type === CouponType::PERCENT) {
-            $percent = $coupon->amount;
+    }
+
+    public function discountAmount(int $amount): int
+    {
+        if ($this->discount->amount_type === CouponType::PERCENT) {
+            $percent = $this->discount->amount;
             $discountAmount = ($percent / 100) * $amount;
         } else {
-            $discountAmount = $coupon->amount;
+            $discountAmount = $this->discount->amount;
         }
 
-        return $coupon->discount_ceiling ?
-            min($discountAmount, $coupon->discount_ceiling) :
+        return $this->discount->discount_ceiling ?
+            min($discountAmount, $this->discount->discount_ceiling) :
             $discountAmount;
     }
 }
