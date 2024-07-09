@@ -17,21 +17,18 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@gmail.com',
         ]);
-        Coupon::factory(5)->create([
-            'usage_limit' => fake()->numberBetween(1, 5),
-            'used_count' => 0,
-            'couponable_id' => $user->id,
-            'couponable_type' => User::class,
-        ]);
+        Coupon::factory(3)->create(['user_id' => $user]);
+        Coupon::factory(10)->create();
+
 
         $products = Product::factory(50)->create();
-        foreach ($products as $product) {
-            if (fake()->boolean(30)) {
-                Coupon::factory()->create([
-                    'couponable_id' => $product->id,
-                    'couponable_type' => Product::class,
-                ]);
-            }
-        }
+//        foreach ($products as $product) {
+//            if (fake()->boolean(30)) {
+//                Coupon::factory()->create([
+//                    'couponable_id' => $product->id,
+//                    'couponable_type' => Product::class,
+//                ]);
+//            }
+//        }
     }
 }

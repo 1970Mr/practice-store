@@ -11,19 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::create('amazing_sales', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->integer('amount');
-            $table->tinyInteger('amount_type')->comment('0: percent, 1: fixed amount');
-            $table->integer('minimum_amount')->nullable()->comment('If it was null, it means no limit');
-            $table->integer('discount_ceiling')->nullable()->comment('If it was null, it means no limit');
+            $table->tinyInteger('percent');
             $table->integer('usage_limit')->nullable()->comment('If it was null, it means no limit');
             $table->integer('used_count')->default(0);
             $table->timestamp('start_time');
             $table->timestamp('end_time');
-            $table->foreignId('user_id')->nullable()->comment('If it was null, it means this is for all users')
-                ->constrained('users')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coupons');
+        Schema::dropIfExists('amazing_sale');
     }
 };

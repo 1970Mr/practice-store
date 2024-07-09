@@ -3,11 +3,14 @@
 namespace App\Domain\Cost;
 
 use App\Domain\Cost\Contracts\CostInterface;
+use App\Domain\Cost\Traits\CostTrait;
 use App\Models\Coupon;
 use App\Services\Discount\DiscountCalculator;
 
 readonly class DiscountCouponCost implements CostInterface
 {
+    use CostTrait;
+
     public function __construct(
          private CostInterface $cost,
         private DiscountCalculator $discountCalculator
@@ -33,14 +36,5 @@ readonly class DiscountCouponCost implements CostInterface
     public function getDescription(): string
     {
         return "Discount Coupon Cost";
-    }
-
-    public function getCostSummary(): array
-    {
-        if ($this->calculateCost() !== 0) {
-            $costSummary = [$this->getDescription() => $this->calculateCost()];
-            return array_merge($this->cost->getCostSummary(), $costSummary);
-        }
-        return $this->cost->getCostSummary();
     }
 }

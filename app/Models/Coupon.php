@@ -12,13 +12,15 @@ class Coupon extends Model
 
     protected $fillable = [
         'code',
-        'percent',
-        'amount_limit',
+        'amount',
+        'amount_type',
+        'minimum_amount',
+        'discount_ceiling',
         'usage_limit',
         'used_count',
-        'expire_time',
-        'couponable_id',
-        'couponable_type',
+        'start_time',
+        'end_time',
+        'user_id'
     ];
 
     protected function casts(): array
@@ -33,9 +35,14 @@ class Coupon extends Model
         return $this->morphTo();
     }
 
-    public function isExpired(): bool
+    public function isValid(): bool
     {
-        return now()->isAfter($this->expire_time);
+        return now()->isAfter($this->start_time) && now()->isBefore($this->end_time);
+    }
+
+    public function scopeValid($query)
+    {
+        return $query->where('start_time', '<=', now())->where('end_time', '>=', now());
     }
 
     public function exceededUsageLimit(): bool

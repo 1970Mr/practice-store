@@ -3,10 +3,13 @@
 namespace App\Domain\Cost;
 
 use App\Domain\Cost\Contracts\CostInterface;
+use App\Domain\Cost\Traits\CostTrait;
 use App\Services\Cart\Cart;
 
 readonly class DiscountProductsCost implements CostInterface
 {
+    use CostTrait;
+
     public function __construct(
         private CostInterface $cost,
         private Cart $cart
@@ -33,14 +36,5 @@ readonly class DiscountProductsCost implements CostInterface
     public function getDescription(): string
     {
         return "Discount Products Cost";
-    }
-
-    public function getCostSummary(): array
-    {
-        if ($this->calculateCost() !== 0) {
-            $costSummary = [$this->getDescription() => $this->calculateCost()];
-            return array_merge($this->cost->getCostSummary(), $costSummary);
-        }
-        return $this->cost->getCostSummary();
     }
 }

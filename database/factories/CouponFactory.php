@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -17,15 +18,24 @@ class CouponFactory extends Factory
      */
     public function definition(): array
     {
+        // 0: percent, 1: fixed amount
+        $amountType = fake()->randomElement([0, 1]);
+        $amount = fake()->numberBetween(5, 70);
+        if ($amountType === 1) {
+            $amount = fake()->numberBetween(50000, 500000);
+        }
         return [
             'code' => Str::upper(Str::random(10)),
-            'percent' => fake()->numberBetween(5, 50),
-            'amount_limit' => fake()->numberBetween(1000, 10000),
-            'expire_time' => fake()->dateTimeBetween('now', '+1 year'),
-            'usage_limit' => null,
+//            'code' => fake()->unique()->bothify('COUPON-######'),
+            'amount' => $amount,
+            'amount_type' => $amountType,
+            'minimum_amount' => fake()->optional()->numberBetween(100000, 1000000),
+            'discount_ceiling' => fake()->optional()->numberBetween(50000, 500000),
+            'usage_limit' => fake()->optional()->numberBetween(1, 10),
             'used_count' => 0,
-            'couponable_id' => null,
-            'couponable_type' => null,
+            'start_time' => fake()->dateTimeBetween('-1 week', '+1 week'),
+            'end_time' => fake()->dateTimeBetween('+1 week', '+1 month'),
+            'user_id' => User::factory()->create(),
         ];
     }
 }
