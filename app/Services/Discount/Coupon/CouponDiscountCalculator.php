@@ -6,7 +6,7 @@ use App\Enums\CouponType;
 use App\Models\Coupon;
 use App\Services\Discount\Contracts\AbstractDiscountCalculator;
 
-readonly class DiscountCouponCalculator Extends AbstractDiscountCalculator
+readonly class CouponDiscountCalculator Extends AbstractDiscountCalculator
 {
     public function __construct(private Coupon $discount)
     {

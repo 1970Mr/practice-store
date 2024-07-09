@@ -11,8 +11,6 @@ class AmazingSale extends Model
 
     protected $fillable = [
         'percent',
-        'usage_limit',
-        'used_count',
         'start_time',
         'end_time',
         'product_id'

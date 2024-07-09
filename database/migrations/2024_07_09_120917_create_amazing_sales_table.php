@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('amazing_sales', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('percent');
-            $table->integer('usage_limit')->nullable()->comment('If it was null, it means no limit');
-            $table->integer('used_count')->default(0);
             $table->timestamp('start_time');
             $table->timestamp('end_time');
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();

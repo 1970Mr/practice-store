@@ -11,6 +11,15 @@
             direction: rtl;
             text-align: right;
         }
+
+        .line-through {
+            text-decoration: line-through;
+        }
+
+        .amazing-sale {
+            color: #ff0000 !important;
+            font-weight: bold;
+        }
     </style>
     @stack('styles')
 </head>

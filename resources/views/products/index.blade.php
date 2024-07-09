@@ -17,11 +17,17 @@
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">افزودن به سبد</button>
                                 </form>
                             </div>
-                            @if ($product->hasDiscount())
+                            @if ($product->hasCommonDiscount())
                                 <small class="text-muted">
-                                    <span style="text-decoration: line-through;">{{ number_format($product->price) }} تومان</span>
+                                    <span class="line-through">{{ number_format($product->price) }} تومان</span>
                                     <br>
-                                    <span>{{ number_format($product->discountedPrice()) }} تومان</span>
+                                    <span>{{ number_format($product->commonDiscountPrice()) }} تومان</span>
+                                </small>
+                            @elseif ($product->hasAmazingSale())
+                                <small class="text-muted amazing-sale">
+                                    <span class="line-through">{{ number_format($product->price) }} تومان</span>
+                                    <br>
+                                    <span>{{ number_format($product->amazingSalePrice()) }} تومان</span>
                                 </small>
                             @else
                                 <small class="text-muted">{{ number_format($product->price) }} تومان</small>

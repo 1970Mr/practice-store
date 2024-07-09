@@ -32,4 +32,9 @@ class CommonDiscount extends Model
     {
         return $query->where('minimum_amount', '<=', $price);
     }
+
+    public function hasValidMinimumAmount(int $price): bool
+    {
+        return $this->minimum_amount <= $price;
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Domain\Cost;
 
 use App\Domain\Cost\Contracts\CostInterface;
 use App\Domain\Cost\Traits\CostTrait;
-use App\Services\Discount\Coupon\DiscountCouponCalculator;
+use App\Services\Discount\Coupon\CouponDiscountCalculator;
 
 readonly class DiscountCouponCost implements CostInterface
 {
@@ -19,7 +19,7 @@ readonly class DiscountCouponCost implements CostInterface
         $cost = 0;
         $coupon = session('coupon');
         if ($coupon) {
-            $discountCouponCalculator = new DiscountCouponCalculator($coupon);
+            $discountCouponCalculator = new CouponDiscountCalculator($coupon);
             $cost = $discountCouponCalculator->discountAmount($this->cost->calculateTotalCost());
         }
         return $cost;

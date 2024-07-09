@@ -38,17 +38,23 @@
                                             </form>
                                         </div>
                                         <div class="d-flex justify-content-between">
-                                            @if ($item->hasDiscount())
+                                            @if ($item->hasCommonDiscount())
                                                 <small class="text-muted">
-                                                    <span style="text-decoration: line-through;">{{ number_format($item->price) }} تومان</span>
+                                                    <span class="line-through">{{ number_format($item->price) }} تومان</span>
                                                     <br>
-                                                    <span>{{ number_format($item->discountedPrice()) }} تومان</span>
+                                                    <span>{{ number_format($item->commonDiscountPrice()) }} تومان</span>
+                                                </small>
+                                            @elseif ($item->hasAmazingSale())
+                                                <small class="text-muted amazing-sale">
+                                                    <span class="line-through">{{ number_format($item->price) }} تومان</span>
+                                                    <br>
+                                                    <span>{{ number_format($item->amazingSalePrice()) }} تومان</span>
                                                 </small>
                                             @else
                                                 <small class="text-muted">{{ number_format($item->price) }} تومان</small>
                                             @endif
                                             @if($item->quantity > 1)
-                                                <small class="text-muted">مبلغ {{ $item->quantity }} محصول: {{ number_format($item->discountedPrice() * $item->quantity) }} تومان</small>
+                                                <small class="text-muted">مبلغ {{ $item->quantity }} محصول: {{ number_format($item->calculateFinalPrice() * $item->quantity) }} تومان</small>
                                             @endif
                                         </div>
                                     </div>
