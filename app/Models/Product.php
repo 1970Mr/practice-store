@@ -31,7 +31,7 @@ class Product extends Model
         return $this->stock >= $quantity;
     }
 
-    public function calculateFinalPrice(): int
+    public function discountedPrice(): int
     {
         if (!$this->hasDiscount()) {
             return $this->price;

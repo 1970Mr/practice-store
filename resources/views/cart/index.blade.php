@@ -54,7 +54,7 @@
                                                 <small class="text-muted">{{ number_format($item->price) }} تومان</small>
                                             @endif
                                             @if($item->quantity > 1)
-                                                <small class="text-muted">مبلغ {{ $item->quantity }} محصول: {{ number_format($item->calculateFinalPrice() * $item->quantity) }} تومان</small>
+                                                <small class="text-muted">مبلغ {{ $item->quantity }} محصول: {{ number_format($item->discountedPrice() * $item->quantity) }} تومان</small>
                                             @endif
                                         </div>
                                     </div>

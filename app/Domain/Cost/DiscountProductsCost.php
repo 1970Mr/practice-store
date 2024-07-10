@@ -19,15 +19,13 @@ readonly class DiscountProductsCost implements CostInterface
 
     public function calculateCost(): int
     {
-        $discountedAmount = 0;
+        $discountAmount = 0;
         foreach ($this->cart->all() as $product) {
-            if ($product->hasCommonDiscount()) {
-                $discountedAmount += $product->price - $product->commonDiscountPrice();
-            } elseif ($product->hasAmazingSale()) {
-                $discountedAmount += $product->price - $product->amazingSalePrice();
+            if ($product->hasDiscount()) {
+                $discountAmount += $product->price - $product->discountedPrice();
             }
         }
-        return $discountedAmount;
+        return $discountAmount;
     }
 
     public function calculateTotalCost(): int

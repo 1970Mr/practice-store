@@ -1,1 +1,1 @@
-> This is just a personal practice project for testing operations related to shopping carts, orders and payments.
+> This is just a personal practice project to test store related operations.
