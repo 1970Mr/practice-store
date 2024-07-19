@@ -3,7 +3,6 @@
 namespace App\Domain\Coupon\Validator;
 
 use App\Domain\Cost\Contracts\CostInterface;
-use App\Enums\CouponType;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 

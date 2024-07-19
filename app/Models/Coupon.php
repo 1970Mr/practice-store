@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Enums\CouponType;
 use App\Traits\HasValidTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Coupon extends Model
 {

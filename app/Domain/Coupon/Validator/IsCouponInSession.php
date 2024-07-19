@@ -2,7 +2,6 @@
 
 namespace App\Domain\Coupon\Validator;
 
-use App\Enums\CouponType;
 use App\Exceptions\InvalidCouponException;
 use App\Models\Coupon;
 

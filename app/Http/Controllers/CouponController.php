@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Domain\Coupon\CouponValidationHandler;
 use App\Http\Requests\CouponRequest;
 use App\Models\Coupon;
-use Illuminate\Http\RedirectResponse;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 
 class CouponController extends Controller
 {

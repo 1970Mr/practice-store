@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Jobs\SendEmail;
 use App\Mail\OrderDetails;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendOrderDetails
 {
