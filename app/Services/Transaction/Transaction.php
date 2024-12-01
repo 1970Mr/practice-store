@@ -49,6 +49,8 @@ class Transaction
      * Create a new transaction for an order.
      *
      * @param Order $order
+     * @param string $paymentMethod
+     * @param string|null $gateway
      * @param int|null $amount The transaction amount (optional). If this value is null, the default amount from the order ($order->amount) is used.
      * @return TransactionModel
      */

@@ -23,15 +23,15 @@ return new class extends Migration
             $table->string('gateway')->nullable();
             $table->bigInteger('reference_id')->nullable();
             $table->enum('status', TransactionStatus::values())->default(TransactionStatus::PENDING->value);
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
 
         Schema::create('transaction_callbacks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->constrained('transactions')->onDelete('cascade');
+            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
             $table->text('callback_payload')->nullable();
             $table->timestamps();
         });
@@ -43,5 +43,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('transactions');
+        Schema::dropIfExists('transaction_callbacks');
     }
 };
