@@ -52,7 +52,7 @@ class TransactionController extends Controller
             DB::commit();
             return $this->transactionService->processPayment($transaction, $invoice, $callbackUrl);
         } catch (Exception $e) {
-            logger($e);
+            logger($e->getMessage());
             DB::rollBack();
             return back()->with(['error' => __('Payment failed!')]);
         }
