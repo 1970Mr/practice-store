@@ -28,7 +28,7 @@ trait HasDiscount
 
     public function hasCommonDiscount(): bool
     {
-        return $this->commonDiscount()?->hasValidMinimumAmount($this->price);
+        return (bool)$this->commonDiscount()?->hasValidMinimumAmount($this->price);
     }
 
     public function commonDiscountPrice(): int
